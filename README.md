@@ -1,0 +1,2 @@
+# im-frontend
+Inventory management
