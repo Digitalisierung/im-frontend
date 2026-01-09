@@ -8,12 +8,10 @@
     "src/main.ts"
   ],
   "include": [
-    "src/app/**/*.ts"
+    "src/**/*.ts"
   ],
   "exclude": [
-    "src/hooks",
-    "src/components/ui",
-    "src/lib",
-    "src/**/*.tsx"
+    "src/test.ts",
+    "src/**/*.spec.ts"
   ]
 }
