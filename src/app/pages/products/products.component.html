@@ -1,0 +1,161 @@
+<div class="row mb-4">
+  <div class="col-12">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h2>Produktverwaltung</h2>
+        <p class="text-muted mb-0">Alle Produkte verwalten und bearbeiten</p>
+      </div>
+      <a routerLink="/products/new" class="btn btn-primary" data-testid="button-new-product">
+        <i class="bi bi-plus-circle me-2"></i>Neues Produkt
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-md-5">
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input type="text" class="form-control" placeholder="Produkt suchen..." [(ngModel)]="searchQuery" (ngModelChange)="applyFilters()" data-testid="input-search">
+        </div>
+      </div>
+      <div class="col-md-3">
+        <select class="form-select" [(ngModel)]="filterCatalog" (ngModelChange)="applyFilters()" data-testid="select-catalog-filter">
+          <option value="">Alle Kataloge</option>
+          <option *ngFor="let catalog of catalogs" [value]="catalog.id">{{ catalog.name }}</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <select class="form-select" [(ngModel)]="filterStatus" (ngModelChange)="applyFilters()" data-testid="select-status-filter">
+          <option value="">Alle Status</option>
+          <option value="active">Aktiv</option>
+          <option value="inactive">Inaktiv</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-outline-secondary w-100" (click)="resetFilters()" data-testid="button-reset-filters">
+          <i class="bi bi-arrow-clockwise me-1"></i>Zurücksetzen
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="alert alert-info" *ngIf="hasSelection" role="alert">
+  <div class="d-flex justify-content-between align-items-center">
+    <div>
+      <i class="bi bi-check-circle me-2"></i>
+      <strong>{{ selectedProducts.size }}</strong> Produkt(e) ausgewählt
+    </div>
+    <div class="btn-group">
+      <select class="form-select form-select-sm me-2" [(ngModel)]="bulkCatalogId" style="width: 200px;" data-testid="select-bulk-catalog">
+        <option value="">Katalog auswählen...</option>
+        <option value="">Katalog entfernen</option>
+        <option *ngFor="let catalog of catalogs" [value]="catalog.id">{{ catalog.name }}</option>
+      </select>
+      <button class="btn btn-sm btn-primary" (click)="bulkAssignCatalog()" [disabled]="!bulkCatalogId && bulkCatalogId !== ''" data-testid="button-bulk-assign">
+        <i class="bi bi-collection me-1"></i>Katalog zuweisen
+      </button>
+      <button class="btn btn-sm btn-danger ms-2" (click)="bulkDelete()" data-testid="button-bulk-delete">
+        <i class="bi bi-trash me-1"></i>Löschen
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span>Produktliste (<span data-testid="text-product-count">{{ products.length }}</span> Produkte)</span>
+  </div>
+  <div class="card-body p-0">
+    <div *ngIf="isLoading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Laden...</span>
+      </div>
+    </div>
+    <div class="table-responsive" *ngIf="!isLoading">
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th style="width: 40px;">
+              <input type="checkbox" class="form-check-input" [checked]="allSelected" (change)="toggleSelectAll($event)" data-testid="checkbox-select-all">
+            </th>
+            <th>Produktname</th>
+            <th>SKU</th>
+            <th>Katalog</th>
+            <th>Eigenschaften</th>
+            <th>Status</th>
+            <th>Aktionen</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of products" 
+              [attr.data-testid]="'row-product-' + product.id"
+              (dblclick)="onProductDoubleClick(product)"
+              style="cursor: pointer;"
+              title="Doppelklicken für Details">
+            <td (click)="$event.stopPropagation()">
+              <input type="checkbox" class="form-check-input" [checked]="isProductSelected(product.id)" (change)="toggleProductSelection(product.id)" [attr.data-testid]="'checkbox-product-' + product.id">
+            </td>
+            <td>
+              <div class="d-flex align-items-center">
+                <div class="me-3">
+                  <div style="width: 40px; height: 40px; background-color: #e9ecef; border-radius: 4px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                    <img *ngIf="product.imageUrl" [src]="product.imageUrl" [alt]="product.name" style="width: 100%; height: 100%; object-fit: cover;" [attr.data-testid]="'img-product-' + product.id">
+                    <i *ngIf="!product.imageUrl" class="bi bi-box text-muted"></i>
+                  </div>
+                </div>
+                <div>
+                  <strong>{{ product.name }}</strong><br>
+                  <small class="text-muted">{{ product.description || 'Keine Beschreibung' }}</small>
+                </div>
+              </div>
+            </td>
+            <td><code>{{ product.sku }}</code></td>
+            <td><span class="badge" [ngClass]="'bg-' + getCatalogColor(product.catalogId)">{{ getCatalogName(product.catalogId) }}</span></td>
+            <td>
+              <small class="text-muted" *ngIf="product.dynamicFields && product.dynamicFields.length > 0">
+                <div *ngFor="let field of product.dynamicFields.slice(0, 2)">
+                  {{ field.name }}: {{ field.value }}
+                </div>
+              </small>
+              <small class="text-muted" *ngIf="!product.dynamicFields || product.dynamicFields.length === 0">
+                Keine Eigenschaften
+              </small>
+            </td>
+            <td><span class="badge" [ngClass]="product.active ? 'bg-success' : 'bg-warning'">{{ product.active ? 'Aktiv' : 'Inaktiv' }}</span></td>
+            <td (click)="$event.stopPropagation()">
+              <div class="action-buttons">
+                <button class="btn btn-sm btn-outline-primary" [routerLink]="['/products/edit', product.id]" title="Bearbeiten" [attr.data-testid]="'button-edit-' + product.id">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteProduct(product.id)" title="Löschen" [attr.data-testid]="'button-delete-' + product.id">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="products.length === 0">
+            <td colspan="7" class="text-center text-muted py-5">
+              <div class="empty-state">
+                <i class="bi bi-inbox"></i>
+                <p>Keine Produkte gefunden</p>
+                <small>Versuchen Sie, Ihre Suchkriterien anzupassen</small>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Product Detail Modal -->
+<app-product-detail-modal 
+  [product]="selectedProduct"
+  [catalogName]="selectedProductCatalogName"
+  [catalogColor]="selectedProductCatalogColor"
+  modalId="productDetailModal">
+</app-product-detail-modal>
