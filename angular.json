@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "../server/public",
+            "outputPath": "dist/product-catalog",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [],
@@ -58,7 +58,8 @@
               "buildTarget": "product-catalog:build:production"
             },
             "development": {
-              "buildTarget": "product-catalog:build:development"
+              "buildTarget": "product-catalog:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development",
