@@ -4,7 +4,7 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "dev": "ng serve --configuration development",
+    "dev": "ng serve --configuration development --proxy-config proxy.conf.json",
     "build": "ng build --configuration production",
     "start": "ng serve",
     "check": "tsc",
@@ -25,7 +25,6 @@
     "@angular/router": "^20.3.2",
     "@jridgewell/trace-mapping": "^0.3.25",
     "@neondatabase/serverless": "^0.10.4",
-    "@spartan-ng/ui-core": "^0.0.1-alpha.380",
     "@types/multer": "^2.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
