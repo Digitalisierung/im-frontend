@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {catchError, map, Observable, of} from 'rxjs';
+import {catchError, map, Observable, of, tap} from 'rxjs';
 import {InsertProduct, Product} from '../models/product.model';
 import {ArticlePaginationResponse} from '../models/article.pagination.response';
 import {Article} from "@/app/models/article.model";
+import {response} from "express";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class ProductService {
   getProducts(search?: string, catalogId?: string): Observable<Product[]> {
     let url = this.apiUrl;
     const params: string[] = [];
-    
+
+    console.log("url => ", url);
     if (search) {
       params.push(`search=${encodeURIComponent(search)}`);
     }
@@ -29,9 +31,10 @@ export class ProductService {
     }
 
     return this.http.get<ArticlePaginationResponse>(url).pipe(
+        tap((value) => {console.log("ARTICLES => ", value.articles);}),
         map((response) => this.mapArticleResponseToProducts(response)),
         catchError((error) => {
-          console.error(error);
+          console.error("ERROR = > ", error);
           return of([]);
         })
     );
@@ -39,6 +42,7 @@ export class ProductService {
 
   getProduct(id: string): Observable<Product> {
     return this.http.get<Article>(`${this.apiUrl}/${id}`).pipe(
+        tap((value) => console.log("ARTICLE => ", value)),
         map((article) => this.buildProductFrom(article))
     );
   }
