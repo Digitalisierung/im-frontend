@@ -9,7 +9,8 @@ import {environment} from "@/environments/environment";
   providedIn: 'root'
 })
 export class CatalogService {
-  private apiUrl = `${environment.apiBaseUrl}/api/catalogs`;
+  private apiUrl = `${environment.apiBaseUrl}/catalogs`;
+  // private apiUrl = `${environment.apiBaseUrl}/api/catalogs`;
 
   constructor(private http: HttpClient) {}
 
