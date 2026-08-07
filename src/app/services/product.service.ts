@@ -4,13 +4,13 @@ import {catchError, map, Observable, of, tap} from 'rxjs';
 import {InsertProduct, Product} from '../models/product.model';
 import {ArticlePaginationResponse} from '../models/article.pagination.response';
 import {Article} from "@/app/models/article.model";
-import {response} from "express";
+import {environment} from '@/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = '/api/articles';
+  private apiUrl = `${environment.apiBaseUrl}/api/articles`;
 
   constructor(private http: HttpClient) {}
 
