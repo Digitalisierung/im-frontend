@@ -1,20 +1,26 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Product, InsertProduct } from '../models/product.model';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {catchError, map, Observable, of, tap} from 'rxjs';
+import {InsertProduct, Product} from '../models/product.model';
+import {ArticlePaginationResponse} from '../models/article.pagination.response';
+import {Article} from "@/app/models/article.model";
+import {environment} from '@/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = '/api/products';
+  private apiUrl = `${environment.apiBaseUrl}/articles`;
+  // private apiUrl = `${environment.apiBaseUrl}/api/articles`;
+  // LocalStack: http://fdmwi803xk.execute-api.localhost.localstack.cloud:4566/Prod
 
   constructor(private http: HttpClient) {}
 
   getProducts(search?: string, catalogId?: string): Observable<Product[]> {
     let url = this.apiUrl;
     const params: string[] = [];
-    
+
+    console.log("url => ", url);
     if (search) {
       params.push(`search=${encodeURIComponent(search)}`);
     }
@@ -25,12 +31,22 @@ export class ProductService {
     if (params.length > 0) {
       url += '?' + params.join('&');
     }
-    
-    return this.http.get<Product[]>(url);
+
+    return this.http.get<ArticlePaginationResponse>(url).pipe(
+        tap((value) => {console.log("ARTICLES => ", value.articles);}),
+        map((response) => this.mapArticleResponseToProducts(response)),
+        catchError((error) => {
+          console.error("ERROR = > ", error);
+          return of([]);
+        })
+    );
   }
 
   getProduct(id: string): Observable<Product> {
-    return this.http.get<Product>(`${this.apiUrl}/${id}`);
+    return this.http.get<Article>(`${this.apiUrl}/${id}`).pipe(
+        tap((value) => console.log("ARTICLE => ", value)),
+        map((article) => this.buildProductFrom(article))
+    );
   }
 
   createProduct(product: InsertProduct): Observable<Product> {
@@ -43,5 +59,33 @@ export class ProductService {
 
   deleteProduct(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  private mapArticleResponseToProducts(response: ArticlePaginationResponse): Product[] {
+    const articles = JSON.parse(response.articles) as Article[];
+
+    return articles.map((article) => this.buildProductFrom(article));
+  }
+
+  private buildProductFrom(article: Article): Product {
+    return {
+      id: this.extractIdFromSortKey(article.sortKey),
+      name: article.name,
+      sku: article.sku,
+      description: article.description,
+      stock: article.stock,
+      imageUrl: article.imageUrl,
+      catalogId: article.catalogId,
+      active: true, // TODO: entfernen oder state: string = ACTIVE.
+      featured: article.isFeatured,
+      dynamicFields: [],
+      createdAt: article.createdAt,
+      updatedAt: article.updatedAt,
+      entityType: article.entityType
+    };
+  }
+
+  private extractIdFromSortKey(sortKey: string): string {
+    return sortKey.startsWith("ITEM#") ? sortKey.substring("ITEM#".length) : sortKey;
   }
 }

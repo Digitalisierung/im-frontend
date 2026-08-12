@@ -1,8 +1,11 @@
 {
   "/api": {
-    "target": "http://localhost:8080",
+    "target": "https://0r4vcoy536.execute-api.eu-central-1.amazonaws.com",
     "secure": false,
     "changeOrigin": true,
+    "pathRewrite": {
+      "^/api": "/local-env"
+    },
     "logLevel": "debug"
   }
 }

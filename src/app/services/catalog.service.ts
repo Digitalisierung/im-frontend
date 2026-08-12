@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Catalog, InsertCatalog } from '../models/catalog.model';
+import {environment} from "@/environments/environment";
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class CatalogService {
-  private apiUrl = '/api/catalogs';
+  private apiUrl = `${environment.apiBaseUrl}/catalogs`;
+  // private apiUrl = `${environment.apiBaseUrl}/api/catalogs`;
 
   constructor(private http: HttpClient) {}
 
