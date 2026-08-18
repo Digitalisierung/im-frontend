@@ -1,27 +1,73 @@
 {
-  "include": ["src/**/*", "shared/**/*", "server/**/*"],
-  "exclude": ["node_modules", "build", "dist", "**/*.test.ts", "cdk.out"],
+  "include": [
+    "src/**/*",
+    "shared/**/*",
+    "server/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "build",
+    "dist",
+    "**/*.test.ts",
+    "cdk.out",
+    "infrastructure/**/*"
+  ],
+  "compileOnSave": false,
   "compilerOptions": {
-    "incremental": true,
-    "tsBuildInfoFile": "./node_modules/typescript/tsbuildinfo",
-    "noEmit": true,
-    "target": "ES2022",
-    "module": "ESNext",
     "strict": true,
-    "lib": ["esnext", "dom", "dom.iterable"],
-    "jsx": "preserve",
-    "esModuleInterop": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
-    "allowImportingTsExtensions": false,
-    "moduleResolution": "node",
+    "isolatedModules": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "useDefineForClassFields": false,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "preserve",
     "baseUrl": ".",
-    "types": ["node"],
     "paths": {
-      "@/*": ["./src/*"],
-      "@shared/*": ["./shared/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
-  }
+  },
+  //  "compilerOptions": {
+  //    "incremental": true,
+  //    "tsBuildInfoFile": "./node_modules/typescript/tsbuildinfo",
+  //    "noEmit": true,
+  //    "target": "ES2022",
+  //    "module": "ESNext",
+  //    "strict": true,
+  //    "lib": ["esnext", "dom", "dom.iterable"],
+  //    "jsx": "preserve",
+  //    "esModuleInterop": true,
+  //    "skipLibCheck": true,
+  //    "allowImportingTsExtensions": false,
+  //    "moduleResolution": "node",
+  //    "experimentalDecorators": true,
+  //    "emitDecoratorMetadata": true,
+  //    "useDefineForClassFields": false,
+  //    "baseUrl": ".",
+  //    "types": ["node"],
+  //    "paths": {
+  //      "@/*": ["./src/*"],
+  //      "@shared/*": ["./shared/*"]
+  //    }
+  //  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
 }

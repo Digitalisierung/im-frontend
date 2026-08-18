@@ -27,7 +27,7 @@ export class PipelineStack extends Stack {
 
     public initialize(): void {
         const pipelineArtifactBucket = this.createPipelineArtifactBucket();
-        const imFrontendBucket = this.createImFrontendBucked();
+        const imFrontendBucket = this.createImFrontendBucket();
 
         const projectRole = this.createRole(imFrontendBucket);
 
@@ -67,7 +67,7 @@ export class PipelineStack extends Stack {
         return artifactBucket;
     }
 
-    private createImFrontendBucked(): Bucket {
+    private createImFrontendBucket(): Bucket {
         const imFrontendBucket = new Bucket(this, "ImFrontendBucketId", {
             blockPublicAccess: new BlockPublicAccess({
                 blockPublicAcls: false,

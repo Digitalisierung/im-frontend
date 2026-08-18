@@ -1,10 +1,10 @@
 {
   "/api": {
-    "target": "https://0r4vcoy536.execute-api.eu-central-1.amazonaws.com",
+    "target": "http://vskhs44nqc.execute-api.localhost.localstack.cloud:4566",
     "secure": false,
     "changeOrigin": true,
     "pathRewrite": {
-      "^/api": "/local-env"
+      "^/api": "/Prod"
     },
     "logLevel": "debug"
   }
