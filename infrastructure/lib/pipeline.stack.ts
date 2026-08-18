@@ -97,7 +97,7 @@ export class PipelineStack extends Stack {
     // Role to build and deploy Website to S3 bucket.
     private createRole(bucket: Bucket): Role {
         const projectRole = new Role(this, "ProjectRoleId", {
-            assumedBy: new ServicePrincipal('codebuild.amatonaws.com')
+            assumedBy: new ServicePrincipal('codebuild.amazonaws.com')
         });
 
         projectRole.addToPolicy(

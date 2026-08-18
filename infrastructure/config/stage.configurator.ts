@@ -96,11 +96,9 @@ export class StageConfigurator {
      * @throws Error Einen Fehler, wenn Branch-Name null oder leer ist.
      */
     public static fromLocal(branch: string): StageConfigurator {
-        if (branch || branch.trim() === '') {
+        if (!branch || branch.trim() === '') {
             throw new Error(`Invalid branch name.`);
         }
-
-        const normalizedStageName = branch.toLowerCase();
 
         return new StageConfigurator(
             'Local-env',
@@ -114,7 +112,7 @@ export class StageConfigurator {
             1024,
             'DEBUG',
             ['*'],
-            `cdk synth -c branch=${'branch'}`
+            `cdk synth -c branch=${branch}`
         );
     };
 

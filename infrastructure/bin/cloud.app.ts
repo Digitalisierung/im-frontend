@@ -2,14 +2,27 @@
 import {App} from "aws-cdk-lib";
 import {PipelineStack} from "../lib/pipeline.stack";
 import {StageConfigurator} from "../config/stage.configurator";
+import {StageConfiguration} from "../config/stage.configuration";
 
 const app = new App();
-const stageConfig = StageConfigurator.fromStage('Dev').convertToConfigurationObject();
+let stageConfig: StageConfiguration;
+
+const stageName = app.node.tryGetContext("stage")?.toString().trim();
+if (stageName) {
+    stageConfig = StageConfigurator.fromStage(stageName).convertToConfigurationObject();
+} else {
+    const branchName = app.node.tryGetContext("branch")?.toString().trim();
+
+    if (!branchName) {
+        throw new Error(`Invalid branch name.`);
+    }
+    stageConfig = StageConfigurator.fromLocal(branchName).convertToConfigurationObject();
+}
 
 let pipelineStack = new PipelineStack(app, "ImFrontendPipelineStackId", stageConfig, {
         env: {
-            account: "251183416711",
-            region: "eu-central-1",
+            account: process.env.CDK_DEFAULT_ACCOUNT,
+            region: process.env.CDK_DEFAULT_REGION,
         }
     }
 );
