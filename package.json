@@ -5,10 +5,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "ng serve --configuration development --proxy-config proxy.conf.json",
-    "build": "ng build --configuration production",
+    "build": "ng build --configuration development",
     "start": "ng serve",
-    "check": "tsc",
-    "db:push": "drizzle-kit push"
+    "check": "tsc"
   },
   "dependencies": {
     "@angular-devkit/build-angular": "^20.3.3",
