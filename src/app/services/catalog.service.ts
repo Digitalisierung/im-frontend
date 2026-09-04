@@ -11,7 +11,6 @@ import {CatalogPaginationResponse} from "@/app/models/catalog.pagination.respons
 })
 export class CatalogService {
   private apiUrl = `${environment.apiBaseUrl}/catalogs`;
-  // private apiUrl = `${environment.apiBaseUrl}/api/catalogs`;
 
   constructor(private http: HttpClient) {}
 
