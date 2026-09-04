@@ -5,6 +5,7 @@ export interface Catalog {
   color: string;
   productCount?: number;
   createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface InsertCatalog {

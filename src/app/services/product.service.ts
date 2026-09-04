@@ -11,8 +11,6 @@ import {environment} from '@/environments/environment';
 })
 export class ProductService {
   private apiUrl = `${environment.apiBaseUrl}/articles`;
-  // private apiUrl = `${environment.apiBaseUrl}/api/articles`;
-  // LocalStack: http://fdmwi803xk.execute-api.localhost.localstack.cloud:4566/Prod
 
   constructor(private http: HttpClient) {}
 
