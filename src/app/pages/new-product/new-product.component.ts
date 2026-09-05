@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ProductService } from '../../services/product.service';
+import { ArticleService } from '../../services/article.service';
 import { CatalogService } from '../../services/catalog.service';
 import { Product, InsertProduct, DynamicField } from '../../models/product.model';
 import { Catalog } from '../../models/catalog.model';
@@ -25,7 +25,7 @@ export class NewProductComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private productService: ProductService,
+    private productService: ArticleService,
     private catalogService: CatalogService,
     private router: Router,
     private route: ActivatedRoute
@@ -317,7 +317,7 @@ export class NewProductComponent implements OnInit {
     };
 
     if (this.isEditMode && this.productId) {
-      this.productService.updateProduct(this.productId, productData).subscribe({
+      this.productService.updateArticle(this.productId, productData).subscribe({
         next: () => {
           alert('Produkt erfolgreich aktualisiert!');
           this.router.navigate(['/products']);

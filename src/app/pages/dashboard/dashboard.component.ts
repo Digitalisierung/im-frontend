@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { ProductService } from '../../services/product.service';
+import { ArticleService } from '../../services/article.service';
 import { CatalogService } from '../../services/catalog.service';
 import { Product } from '../../models/product.model';
 import { Catalog } from '../../models/catalog.model';
@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit {
   unassigned = 0;
 
   constructor(
-    private productService: ProductService,
+    private productService: ArticleService,
     private catalogService: CatalogService
   ) {}
 

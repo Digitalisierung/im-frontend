@@ -9,7 +9,7 @@ import {environment} from '@/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class ProductService {
+export class ArticleService {
   private apiUrl = `${environment.apiBaseUrl}/articles`;
 
   constructor(private http: HttpClient) {}
@@ -51,8 +51,8 @@ export class ProductService {
     return this.http.post<Product>(this.apiUrl, product);
   }
 
-  updateProduct(id: string, product: Partial<Product>): Observable<Product> {
-    return this.http.put<Product>(`${this.apiUrl}/${id}`, product);
+  updateArticle(id: string, product: Partial<Article>): Observable<Article> {
+    return this.http.put<Article>(`${this.apiUrl}/${id}`, product);
   }
 
   deleteProduct(id: string): Observable<void> {

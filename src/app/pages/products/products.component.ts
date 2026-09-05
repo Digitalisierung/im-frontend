@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { ProductService } from '../../services/product.service';
+import { ArticleService } from '../../services/article.service';
 import { CatalogService } from '../../services/catalog.service';
 import { Product } from '../../models/product.model';
 import { Catalog } from '../../models/catalog.model';
@@ -34,7 +34,7 @@ export class ProductsComponent implements OnInit {
   selectedProductCatalogColor: string = 'secondary';
 
   constructor(
-    private productService: ProductService,
+    private productService: ArticleService,
     private catalogService: CatalogService
   ) {}
 

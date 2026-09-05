@@ -12,6 +12,29 @@
   </div>
 </div>
 
+<div class="card">
+    <div class="card-body">
+        <div class="row text-center">
+            <div class="col-md-3">
+                <div class="h4 text-primary mb-0" data-testid="text-total-catalogs">{{ totalCatalogs }}</div>
+                <small class="text-muted">Gesamtkataloge</small>
+            </div>
+            <div class="col-md-3">
+                <div class="h4 text-success mb-0" data-testid="text-total-products-catalogs">{{ totalProducts }}</div>
+                <small class="text-muted">Gesamtprodukte</small>
+            </div>
+            <div class="col-md-3">
+                <div class="h4 text-warning mb-0" data-testid="text-avg-products">{{ avgProductsPerCatalog }}</div>
+                <small class="text-muted">Ø Produkte/Katalog</small>
+            </div>
+            <div class="col-md-3">
+                <div class="h4 text-danger mb-0" data-testid="text-empty-catalogs">{{ emptyCatalogs }}</div>
+                <small class="text-muted">Leere Kataloge</small>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row">
   <div *ngFor="let catalog of catalogs" class="col-md-6 col-lg-4 mb-4" [attr.data-testid]="'card-catalog-' + catalog.id">
     <div class="card h-100" 
@@ -60,29 +83,6 @@
           <p>Keine Kataloge vorhanden</p>
           <small class="text-muted">Erstellen Sie Ihren ersten Katalog, um Produkte zu organisieren</small>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="card">
-  <div class="card-body">
-    <div class="row text-center">
-      <div class="col-md-3">
-        <div class="h4 text-primary mb-0" data-testid="text-total-catalogs">{{ totalCatalogs }}</div>
-        <small class="text-muted">Gesamtkataloge</small>
-      </div>
-      <div class="col-md-3">
-        <div class="h4 text-success mb-0" data-testid="text-total-products-catalogs">{{ totalProducts }}</div>
-        <small class="text-muted">Gesamtprodukte</small>
-      </div>
-      <div class="col-md-3">
-        <div class="h4 text-warning mb-0" data-testid="text-avg-products">{{ avgProductsPerCatalog }}</div>
-        <small class="text-muted">Ø Produkte/Katalog</small>
-      </div>
-      <div class="col-md-3">
-        <div class="h4 text-danger mb-0" data-testid="text-empty-catalogs">{{ emptyCatalogs }}</div>
-        <small class="text-muted">Leere Kataloge</small>
       </div>
     </div>
   </div>
