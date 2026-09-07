@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {catchError, map, Observable, of} from 'rxjs';
 import { Catalog, InsertCatalog } from '../models/catalog.model';
 import {environment} from "@/environments/environment";
-import {CatalogPaginationResponse} from "@/app/models/catalog.pagination.response";
+import {CatalogPaginationResponse} from "@/app/dto/catalog.pagination.response";
 
 
 @Injectable({

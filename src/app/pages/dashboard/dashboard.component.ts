@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ArticleService } from '../../services/article.service';
 import { CatalogService } from '../../services/catalog.service';
-import { Product } from '../../models/product.model';
+import { Article } from '../../models/article.model';
 import { Catalog } from '../../models/catalog.model';
 
 @Component({
@@ -14,9 +14,9 @@ import { Catalog } from '../../models/catalog.model';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  products: Product[] = [];
+  products: Article[] = [];
   catalogs: Catalog[] = [];
-  recentProducts: Product[] = [];
+  recentProducts: Article[] = [];
   
   totalProducts = 0;
   activeCatalogs = 0;
@@ -33,7 +33,7 @@ export class DashboardComponent implements OnInit {
   }
 
   loadData(): void {
-    this.productService.getProducts().subscribe({
+    this.productService.getArticles().subscribe({
       next: (products) => {
         this.products = products;
         this.totalProducts = products.length;
@@ -63,7 +63,7 @@ export class DashboardComponent implements OnInit {
       return;
     }
 
-    this.productService.deleteProduct(id).subscribe({
+    this.productService.deleteArticle(id).subscribe({
       next: () => {
         this.loadData();
       },

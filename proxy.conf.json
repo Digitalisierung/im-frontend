@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "http://wcl4ij2mqq.execute-api.localhost.localstack.cloud:4566/Prod",
+    "target": "http://pidwrptgqj.execute-api.localhost.localstack.cloud:4566/Prod",
     "secure": false,
     "changeOrigin": true,
     "pathRewrite": {

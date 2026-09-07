@@ -2,11 +2,11 @@
   <div class="col-12">
     <div class="d-flex justify-content-between align-items-center">
       <div>
-        <h2>Produktverwaltung</h2>
-        <p class="text-muted mb-0">Alle Produkte verwalten und bearbeiten</p>
+        <h2>Artikelverwaltung</h2>
+        <p class="text-muted mb-0">Alle Artikel verwalten und bearbeiten.</p>
       </div>
-      <a routerLink="/products/new" class="btn btn-primary" data-testid="button-new-product">
-        <i class="bi bi-plus-circle me-2"></i>Neues Produkt
+      <a routerLink="/inventar/new" class="btn btn-primary" data-testid="button-new-article">
+          <i class="bi bi-plus-circle me-2">Neuer Artikel</i>
       </a>
     </div>
   </div>
@@ -18,7 +18,7 @@
       <div class="col-md-5">
         <div class="input-group">
           <span class="input-group-text"><i class="bi bi-search"></i></span>
-          <input type="text" class="form-control" placeholder="Produkt suchen..." [(ngModel)]="searchQuery" (ngModelChange)="applyFilters()" data-testid="input-search">
+          <input type="text" class="form-control" placeholder="Nach Artikel suchen..." [(ngModel)]="searchQuery" (ngModelChange)="applyFilters()" data-testid="input-search">
         </div>
       </div>
       <div class="col-md-3">
@@ -47,7 +47,7 @@
   <div class="d-flex justify-content-between align-items-center">
     <div>
       <i class="bi bi-check-circle me-2"></i>
-      <strong>{{ selectedProducts.size }}</strong> Produkt(e) ausgewählt
+      <strong>{{ selectedArticles.size }}</strong> Artikel(e) ausgewählt
     </div>
     <div class="btn-group">
       <select class="form-select form-select-sm me-2" [(ngModel)]="bulkCatalogId" style="width: 200px;" data-testid="select-bulk-catalog">
@@ -67,7 +67,7 @@
 
 <div class="card">
   <div class="card-header d-flex justify-content-between align-items-center">
-    <span>Produktliste (<span data-testid="text-product-count">{{ products.length }}</span> Produkte)</span>
+    <span>Produktliste (<span data-testid="text-article-count">{{ articles.length }}</span> Produkte)</span>
   </div>
   <div class="card-body p-0">
     <div *ngIf="isLoading" class="text-center py-5">
@@ -82,7 +82,7 @@
             <th style="width: 40px;">
               <input type="checkbox" class="form-check-input" [checked]="allSelected" (change)="toggleSelectAll($event)" data-testid="checkbox-select-all">
             </th>
-            <th>Produktname</th>
+            <th>Artikelname</th>
             <th>SKU</th>
             <th>Katalog</th>
             <th>Eigenschaften</th>
@@ -91,57 +91,57 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let product of products" 
-              [attr.data-testid]="'row-product-' + product.id"
-              (dblclick)="onProductDoubleClick(product)"
+          <tr *ngFor="let article of articles"
+              [attr.data-testid]="'row-article-' + article.id"
+              (dblclick)="onArticleDoubleClick(article)"
               style="cursor: pointer;"
               title="Doppelklicken für Details">
             <td (click)="$event.stopPropagation()">
-              <input type="checkbox" class="form-check-input" [checked]="isProductSelected(product.id)" (change)="toggleProductSelection(product.id)" [attr.data-testid]="'checkbox-product-' + product.id">
+              <input type="checkbox" class="form-check-input" [checked]="isArticleSelected(article.id)" (change)="toggleArticleSelection(article.id)" [attr.data-testid]="'checkbox-article-' + article.id">
             </td>
             <td>
               <div class="d-flex align-items-center">
                 <div class="me-3">
                   <div style="width: 40px; height: 40px; background-color: #e9ecef; border-radius: 4px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                    <img *ngIf="product.imageUrl" [src]="product.imageUrl" [alt]="product.name" style="width: 100%; height: 100%; object-fit: cover;" [attr.data-testid]="'img-product-' + product.id">
-                    <i *ngIf="!product.imageUrl" class="bi bi-box text-muted"></i>
+                    <img *ngIf="article.imageUrl" [src]="article.imageUrl" [alt]="article.name" style="width: 100%; height: 100%; object-fit: cover;" [attr.data-testid]="'img-article-' + article.id">
+                    <i *ngIf="!article.imageUrl" class="bi bi-box text-muted"></i>
                   </div>
                 </div>
                 <div>
-                  <strong>{{ product.name }}</strong><br>
-                  <small class="text-muted">{{ product.description || 'Keine Beschreibung' }}</small>
+                  <strong>{{ article.name }}</strong><br>
+                  <small class="text-muted">{{ article.description || 'Keine Beschreibung' }}</small>
                 </div>
               </div>
             </td>
-            <td><code>{{ product.sku }}</code></td>
-            <td><span class="badge" [ngClass]="'bg-' + getCatalogColor(product.catalogId)">{{ getCatalogName(product.catalogId) }}</span></td>
+            <td><code>{{ article.sku }}</code></td>
+            <td><span class="badge" [ngClass]="'bg-' + getCatalogColor(article.catalogId)">{{ getCatalogName(article.catalogId) }}</span></td>
             <td>
-              <small class="text-muted" *ngIf="product.dynamicFields && product.dynamicFields.length > 0">
-                <div *ngFor="let field of product.dynamicFields.slice(0, 2)">
+              <small class="text-muted" *ngIf="article.dynamicFields && article.dynamicFields.length > 0">
+                <div *ngFor="let field of article.dynamicFields.slice(0, 2)">
                   {{ field.name }}: {{ field.value }}
                 </div>
               </small>
-              <small class="text-muted" *ngIf="!product.dynamicFields || product.dynamicFields.length === 0">
+              <small class="text-muted" *ngIf="!article.dynamicFields || article.dynamicFields.length === 0">
                 Keine Eigenschaften
               </small>
             </td>
-            <td><span class="badge" [ngClass]="product.active ? 'bg-success' : 'bg-warning'">{{ product.active ? 'Aktiv' : 'Inaktiv' }}</span></td>
+            <td><span class="badge" [ngClass]="article.active ? 'bg-success' : 'bg-warning'">{{ article.active ? 'Aktiv' : 'Inaktiv' }}</span></td>
             <td (click)="$event.stopPropagation()">
               <div class="action-buttons">
-                <button class="btn btn-sm btn-outline-primary" [routerLink]="['/products/edit', product.id]" title="Bearbeiten" [attr.data-testid]="'button-edit-' + product.id">
+                <button class="btn btn-sm btn-outline-primary" [routerLink]="['/inventar/edit', article.id]" title="Bearbeiten" [attr.data-testid]="'button-edit-' + article.id">
                   <i class="bi bi-pencil"></i>
                 </button>
-                <button class="btn btn-sm btn-outline-danger" (click)="deleteProduct(product.id)" title="Löschen" [attr.data-testid]="'button-delete-' + product.id">
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteArticle(article.id)" title="Löschen" [attr.data-testid]="'button-delete-' + article.id">
                   <i class="bi bi-trash"></i>
                 </button>
               </div>
             </td>
           </tr>
-          <tr *ngIf="products.length === 0">
+          <tr *ngIf="articles.length === 0">
             <td colspan="7" class="text-center text-muted py-5">
               <div class="empty-state">
                 <i class="bi bi-inbox"></i>
-                <p>Keine Produkte gefunden</p>
+                <p>Keine Artikel gefunden</p>
                 <small>Versuchen Sie, Ihre Suchkriterien anzupassen</small>
               </div>
             </td>
@@ -152,10 +152,10 @@
   </div>
 </div>
 
-<!-- Product Detail Modal -->
-<app-product-detail-modal 
-  [product]="selectedProduct"
-  [catalogName]="selectedProductCatalogName"
-  [catalogColor]="selectedProductCatalogColor"
-  modalId="productDetailModal">
-</app-product-detail-modal>
+<!-- Article Detail Modal -->
+<app-article-detail-modal
+  [article]="selectedArticle"
+  [catalogName]="selectedInventarCatalogName"
+  [catalogColor]="selectedInventarCatalogColor"
+  modalId="articleDetailModal">
+</app-article-detail-modal>
