@@ -2,19 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ProductService } from '../../services/product.service';
+import { ArticleService } from '../../services/article.service';
 import { CatalogService } from '../../services/catalog.service';
-import { Product, InsertProduct, DynamicField } from '../../models/product.model';
+import { Article, InsertArticle, DynamicField } from '../../models/article.model';
 import { Catalog } from '../../models/catalog.model';
 
 @Component({
-  selector: 'app-new-product',
+  selector: 'app-new-article',
   standalone: true,
   imports: [CommonModule, RouterLink, ReactiveFormsModule],
-  templateUrl: './new-product.component.html',
-  styleUrls: ['./new-product.component.css']
+  templateUrl: './new-article.component.html',
+  styleUrls: ['./new-article.component.css']
 })
-export class NewProductComponent implements OnInit {
+export class NewArticleComponent implements OnInit {
   productForm: FormGroup;
   catalogs: Catalog[] = [];
   isEditMode = false;
@@ -25,7 +25,7 @@ export class NewProductComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private productService: ProductService,
+    private productService: ArticleService,
     private catalogService: CatalogService,
     private router: Router,
     private route: ActivatedRoute
@@ -65,7 +65,7 @@ export class NewProductComponent implements OnInit {
   }
 
   loadProduct(id: string): void {
-    this.productService.getProduct(id).subscribe({
+    this.productService.getArticle(id).subscribe({
       next: (product) => {
         this.productForm.patchValue({
           name: product.name,
@@ -303,7 +303,7 @@ export class NewProductComponent implements OnInit {
       return field;
     });
     
-    const productData: InsertProduct = {
+    const productData: InsertArticle = {
       name: formValue.name,
       sku: formValue.sku,
       description: formValue.description,
@@ -317,25 +317,25 @@ export class NewProductComponent implements OnInit {
     };
 
     if (this.isEditMode && this.productId) {
-      this.productService.updateProduct(this.productId, productData).subscribe({
+      this.productService.updateArticle(this.productId, productData).subscribe({
         next: () => {
-          alert('Produkt erfolgreich aktualisiert!');
-          this.router.navigate(['/products']);
+          alert('Artikel erfolgreich aktualisiert!');
+          this.router.navigate(['/inventar']);
         },
         error: (err) => {
-          console.error('Error updating product:', err);
-          alert('Fehler beim Aktualisieren des Produkts. Bitte versuchen Sie es erneut.');
+          console.error('Error updating article:', err);
+          alert('Fehler beim Aktualisieren des Artikels. Bitte versuchen Sie es erneut.');
         }
       });
     } else {
-      this.productService.createProduct(productData).subscribe({
+      this.productService.createArticle(productData).subscribe({
         next: () => {
-          alert('Produkt erfolgreich erstellt!');
-          this.router.navigate(['/products']);
+          alert('Artikel erfolgreich erstellt!');
+          this.router.navigate(['/inventar']);
         },
         error: (err) => {
-          console.error('Error creating product:', err);
-          alert('Fehler beim Erstellen des Produkts. Bitte versuchen Sie es erneut.');
+          console.error('Error creating article:', err);
+          alert('Fehler beim Erstellen des Artikels. Bitte versuchen Sie es erneut.');
         }
       });
     }
@@ -353,7 +353,7 @@ export class NewProductComponent implements OnInit {
 
   cancelForm(): void {
     if (confirm('Möchten Sie wirklich abbrechen? Alle ungespeicherten Änderungen gehen verloren.')) {
-      this.router.navigate(['/products']);
+      this.router.navigate(['/inventar']);
     }
   }
 }

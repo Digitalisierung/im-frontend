@@ -17,10 +17,10 @@ export class TopbarComponent {
   getPageTitle(): string {
     const route = this.router.url;
     if (route.includes('dashboard')) return 'Dashboard';
-    if (route.includes('products/new')) return 'Neues Produkt';
-    if (route.includes('products')) return 'Produktverwaltung';
+    if (route.includes('inventar/new')) return 'Neuer Artikel';
+    if (route.includes('inventar')) return 'Inventar';
     if (route.includes('catalogs')) return 'Katalogverwaltung';
-    return 'Produktkatalog';
+    return 'Artikelkatalog';
   }
 
   toggleSidebar() {

@@ -91,17 +91,17 @@ export class CatalogsComponent implements OnInit {
     return this.catalogs.length;
   }
 
-  get totalProducts(): number {
-    return this.catalogs.reduce((sum, cat) => sum + (cat.productCount || 0), 0);
+  get totalArticles(): number {
+    return this.catalogs.reduce((sum, cat) => sum + (cat.articleCount || 0), 0);
   }
 
-  get avgProductsPerCatalog(): number {
+  get avgArticlesPerCatalog(): number {
     if (this.catalogs.length === 0) return 0;
-    return Math.round(this.totalProducts / this.catalogs.length);
+    return Math.round(this.totalArticles / this.catalogs.length);
   }
 
   get emptyCatalogs(): number {
-    return this.catalogs.filter(cat => !cat.productCount || cat.productCount === 0).length;
+    return this.catalogs.filter(cat => !cat.articleCount || cat.articleCount === 0).length;
   }
 
   onCatalogDoubleClick(catalog: Catalog): void {

@@ -2,12 +2,14 @@
   <div class="col-12">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a routerLink="/products">Produkte</a></li>
-        <li class="breadcrumb-item active">{{ isEditMode ? 'Produkt bearbeiten' : 'Neues Produkt' }}</li>
+        <li class="breadcrumb-item"><a routerLink="/inventar">Artikel</a></li>
+        <li class="breadcrumb-item active">{{ isEditMode ? 'Artikel bearbeiten' : 'Neuer Artikel' }}</li>
       </ol>
     </nav>
-    <h2>{{ isEditMode ? 'Produkt bearbeiten' : 'Neues Produkt erstellen' }}</h2>
-    <p class="text-muted">Erstellen Sie ein neues Produkt mit dynamischen Eigenschaften</p>
+    <h2>{{ isEditMode ? 'Artikel bearbeiten' : 'Neuen Artikel erstellen' }}</h2>
+    <p class="text-muted">
+        {{isEditMode ? 'Bearbeiten Sie den ausgewählten Artikel.' : 'Erstellen Sie einen neuen Artikel mit dynamischen Eigenschaften.'}}
+    </p>
   </div>
 </div>
 
@@ -21,7 +23,7 @@
         <div class="card-body">
           <div class="row g-3">
             <div class="col-md-8">
-              <label for="productName" class="form-label">Produktname *</label>
+              <label for="productName" class="form-label">Artikelname *</label>
               <input type="text" class="form-control" [ngClass]="{'is-invalid': getFieldError('name')}" id="productName" formControlName="name" placeholder="z.B. MacBook Pro 14 Zoll" data-testid="input-name">
               <div *ngIf="getFieldError('name')" class="invalid-feedback">
                 {{ getFieldError('name') }}
@@ -36,7 +38,7 @@
             </div>
             <div class="col-12">
               <label for="productDescription" class="form-label">Beschreibung</label>
-              <textarea class="form-control" [ngClass]="{'is-invalid': getFieldError('description')}" id="productDescription" formControlName="description" rows="3" placeholder="Produktbeschreibung eingeben..." data-testid="input-description"></textarea>
+              <textarea class="form-control" [ngClass]="{'is-invalid': getFieldError('description')}" id="productDescription" formControlName="description" rows="3" placeholder="Artikelbeschreibung eingeben..." data-testid="input-description"></textarea>
               <div *ngIf="getFieldError('description')" class="invalid-feedback">
                 {{ getFieldError('description') }}
               </div>
@@ -130,7 +132,7 @@
       
       <div class="d-flex gap-2">
         <button type="submit" class="btn btn-primary btn-lg" data-testid="button-save">
-          <i class="bi bi-check-circle me-2"></i>Produkt speichern
+          <i class="bi bi-check-circle me-2"></i>Artikel speichern
         </button>
         <button type="button" class="btn btn-outline-secondary btn-lg" (click)="resetForm()" data-testid="button-reset">
           <i class="bi bi-arrow-clockwise me-2"></i>Zurücksetzen
@@ -163,7 +165,7 @@
           <div class="form-check form-switch mb-3">
             <input class="form-check-input" type="checkbox" id="productActive" formControlName="active" data-testid="input-active">
             <label class="form-check-label" for="productActive">
-              Produkt ist aktiv
+              Artikel ist aktiv
             </label>
           </div>
           <div class="form-check form-switch">
@@ -177,7 +179,7 @@
       
       <div class="card mb-4">
         <div class="card-header">
-          <i class="bi bi-image me-2"></i>Produktbild
+          <i class="bi bi-image me-2"></i>Artikelbild
         </div>
         <div class="card-body">
           <div *ngIf="!imagePreview" class="mb-3">

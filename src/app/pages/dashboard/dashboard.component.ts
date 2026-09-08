@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { ProductService } from '../../services/product.service';
+import { ArticleService } from '../../services/article.service';
 import { CatalogService } from '../../services/catalog.service';
-import { Product } from '../../models/product.model';
+import { Article } from '../../models/article.model';
 import { Catalog } from '../../models/catalog.model';
 
 @Component({
@@ -14,17 +14,17 @@ import { Catalog } from '../../models/catalog.model';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  products: Product[] = [];
+  articles: Article[] = [];
   catalogs: Catalog[] = [];
-  recentProducts: Product[] = [];
+  recentArticles: Article[] = [];
   
-  totalProducts = 0;
+  totalArticles = 0;
   activeCatalogs = 0;
   newThisWeek = 0;
   unassigned = 0;
 
   constructor(
-    private productService: ProductService,
+    private articleService: ArticleService,
     private catalogService: CatalogService
   ) {}
 
@@ -33,20 +33,20 @@ export class DashboardComponent implements OnInit {
   }
 
   loadData(): void {
-    this.productService.getProducts().subscribe({
-      next: (products) => {
-        this.products = products;
-        this.totalProducts = products.length;
-        this.recentProducts = products.slice(0, 3);
-        this.unassigned = products.filter(p => !p.catalogId).length;
+    this.articleService.getArticles().subscribe({
+      next: (articles) => {
+        this.articles = articles;
+        this.totalArticles = articles.length;
+        this.recentArticles = articles.slice(0, 3);
+        this.unassigned = articles.filter(p => !p.catalogId).length;
         
         const oneWeekAgo = new Date();
         oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-        this.newThisWeek = products.filter(p => 
+        this.newThisWeek = articles.filter(p =>
           p.createdAt && new Date(p.createdAt) > oneWeekAgo
         ).length;
       },
-      error: (err) => console.error('Error loading products:', err)
+      error: (err) => console.error('Error loading articles:', err)
     });
 
     this.catalogService.getCatalogs().subscribe({
@@ -58,16 +58,16 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  deleteProduct(id: string | undefined): void {
-    if (!id || !confirm('Sind Sie sicher, dass Sie dieses Produkt löschen möchten?')) {
+  deleteArticle(id: string | undefined): void {
+    if (!id || !confirm('Sind Sie sicher, dass Sie diesen Artikel löschen möchten?')) {
       return;
     }
 
-    this.productService.deleteProduct(id).subscribe({
+    this.articleService.deleteArticle(id).subscribe({
       next: () => {
         this.loadData();
       },
-      error: (err) => console.error('Error deleting product:', err)
+      error: (err) => console.error('Error deleting article:', err)
     });
   }
 

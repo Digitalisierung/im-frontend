@@ -3,7 +3,7 @@ export interface Catalog {
   name: string;
   description?: string;
   color: string;
-  productCount?: number;
+  articleCount?: number;
   createdAt?: string;
   updatedAt?: string;
 }

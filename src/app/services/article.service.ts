@@ -1,20 +1,20 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {catchError, map, Observable, of, tap} from 'rxjs';
-import {InsertProduct, Product} from '../models/product.model';
-import {ArticlePaginationResponse} from '../models/article.pagination.response';
-import {Article} from "@/app/models/article.model";
+import {InsertArticle, Article} from '../models/article.model';
+import {ArticlePaginationResponse} from '../dto/article.pagination.response';
 import {environment} from '@/environments/environment';
+import {ArticleDto} from "@/app/dto/article.dto";
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProductService {
+export class ArticleService {
   private apiUrl = `${environment.apiBaseUrl}/articles`;
 
   constructor(private http: HttpClient) {}
 
-  getProducts(search?: string, catalogId?: string): Observable<Product[]> {
+  getArticles(search?: string, catalogId?: string): Observable<Article[]> {
     let url = this.apiUrl;
     const params: string[] = [];
 
@@ -31,41 +31,43 @@ export class ProductService {
     }
 
     return this.http.get<ArticlePaginationResponse>(url).pipe(
-        tap((value) => {console.log("ARTICLES => ", value.articles);}),
-        map((response) => this.mapArticleResponseToProducts(response)),
+        map((response) => this.mapArticleResponseToArticles(response)),
         catchError((error) => {
-          console.error("ERROR = > ", error);
+          console.error('Error fetching articles: ', error);
           return of([]);
         })
     );
   }
 
-  getProduct(id: string): Observable<Product> {
-    return this.http.get<Article>(`${this.apiUrl}/${id}`).pipe(
-        tap((value) => console.log("ARTICLE => ", value)),
-        map((article) => this.buildProductFrom(article))
+  getArticle(id: string): Observable<Article> {
+    return this.http.get<ArticleDto>(`${this.apiUrl}/${id}`).pipe(
+        map((article) => this.buildArticleFrom(article)),
+        catchError((error) => {
+          console.error('Error fetching article:', error);
+          return of({} as Article);
+        })
     );
   }
 
-  createProduct(product: InsertProduct): Observable<Product> {
-    return this.http.post<Product>(this.apiUrl, product);
+  createArticle(insertArticle: InsertArticle): Observable<Article> {
+    return this.http.post<Article>(this.apiUrl, insertArticle);
   }
 
-  updateProduct(id: string, product: Partial<Product>): Observable<Product> {
-    return this.http.put<Product>(`${this.apiUrl}/${id}`, product);
+  updateArticle(id: string, article: Partial<Article>): Observable<Article> {
+    return this.http.put<Article>(`${this.apiUrl}/${id}`, article);
   }
 
-  deleteProduct(id: string): Observable<void> {
+  deleteArticle(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  private mapArticleResponseToProducts(response: ArticlePaginationResponse): Product[] {
-    const articles = JSON.parse(response.articles) as Article[];
+  private mapArticleResponseToArticles(response: ArticlePaginationResponse): Article[] {
+    const articles = JSON.parse(response.articles) as ArticleDto[];
 
-    return articles.map((article) => this.buildProductFrom(article));
+    return articles.map((article) => this.buildArticleFrom(article));
   }
 
-  private buildProductFrom(article: Article): Product {
+  private buildArticleFrom(article: ArticleDto): Article {
     return {
       id: this.extractIdFromSortKey(article.sortKey),
       name: article.name,
