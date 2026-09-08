@@ -203,7 +203,7 @@ export class ArticlesComponent implements OnInit {
       })
       .catch(err => {
         console.error('Error deleting articles:', err);
-        alert('Fehler beim Löschen der Artikeln');
+        alert('Fehler beim Löschen der Artikel');
       });
   }
 

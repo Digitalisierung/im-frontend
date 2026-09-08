@@ -6,7 +6,7 @@
         <p class="text-muted mb-0">Alle Artikel verwalten und bearbeiten.</p>
       </div>
       <a routerLink="/inventar/new" class="btn btn-primary" data-testid="button-new-article">
-          <i class="bi bi-plus-circle me-2">Neuer Artikel</i>
+          <i class="bi bi-plus-circle me-2"></i>Neuer Artikel
       </a>
     </div>
   </div>
@@ -29,7 +29,7 @@
       </div>
       <div class="col-md-2">
         <select class="form-select" [(ngModel)]="filterStatus" (ngModelChange)="applyFilters()" data-testid="select-status-filter">
-          <option value="">Alle Status</option>
+          <option value="">Alle Statuswerte</option>
           <option value="active">Aktiv</option>
           <option value="inactive">Inaktiv</option>
         </select>
@@ -47,7 +47,7 @@
   <div class="d-flex justify-content-between align-items-center">
     <div>
       <i class="bi bi-check-circle me-2"></i>
-      <strong>{{ selectedArticles.size }}</strong> Artikel(e) ausgewählt
+      <strong>{{ selectedArticles.size }}</strong> Artikel ausgewählt
     </div>
     <div class="btn-group">
       <select class="form-select form-select-sm me-2" [(ngModel)]="bulkCatalogId" style="width: 200px;" data-testid="select-bulk-catalog">
@@ -67,7 +67,7 @@
 
 <div class="card">
   <div class="card-header d-flex justify-content-between align-items-center">
-    <span>Produktliste (<span data-testid="text-article-count">{{ articles.length }}</span> Produkte)</span>
+    <span>Artikelliste (<span data-testid="text-article-count">{{ articles.length }}</span> Artikel)</span>
   </div>
   <div class="card-body p-0">
     <div *ngIf="isLoading" class="text-center py-5">

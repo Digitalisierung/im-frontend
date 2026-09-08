@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-between align-items-center">
       <div>
         <h2>Katalogverwaltung</h2>
-        <p class="text-muted mb-0">Verwalten Sie Produktkataloge und Kategorien</p>
+        <p class="text-muted mb-0">Verwalten Sie Artikelkataloge und Kategorien.</p>
       </div>
       <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newCatalogModal" data-testid="button-new-catalog">
         <i class="bi bi-plus-circle me-2"></i>Neuer Katalog
@@ -20,12 +20,12 @@
                 <small class="text-muted">Gesamtkataloge</small>
             </div>
             <div class="col-md-3">
-                <div class="h4 text-success mb-0" data-testid="text-total-products-catalogs">{{ totalProducts }}</div>
-                <small class="text-muted">Gesamtprodukte</small>
+                <div class="h4 text-success mb-0" data-testid="text-total-products-catalogs">{{ totalArticles }}</div>
+                <small class="text-muted">Artikel insgesamt</small>
             </div>
             <div class="col-md-3">
-                <div class="h4 text-warning mb-0" data-testid="text-avg-products">{{ avgProductsPerCatalog }}</div>
-                <small class="text-muted">Ø Produkte/Katalog</small>
+                <div class="h4 text-warning mb-0" data-testid="text-avg-products">{{ avgArticlesPerCatalog }}</div>
+                <small class="text-muted">Ø Artikel/Katalog</small>
             </div>
             <div class="col-md-3">
                 <div class="h4 text-danger mb-0" data-testid="text-empty-catalogs">{{ emptyCatalogs }}</div>
@@ -58,8 +58,8 @@
       <div class="card-body">
         <div class="d-flex align-items-center mb-3">
           <div class="flex-grow-1">
-            <div class="h3 mb-0" [attr.data-testid]="'text-product-count-' + catalog.id">{{ catalog.productCount || 0 }}</div>
-            <small class="text-muted">Produkte</small>
+            <div class="h3 mb-0" [attr.data-testid]="'text-product-count-' + catalog.id">{{ catalog.articleCount || 0 }}</div>
+            <small class="text-muted">Artikel</small>
           </div>
           <div class="text-end">
             <i class="bi bi-box-seam" [ngClass]="'text-' + catalog.color" style="font-size: 2.5rem;"></i>
@@ -80,8 +80,8 @@
       <div class="card-body">
         <div class="empty-state">
           <i class="bi bi-inbox"></i>
-          <p>Keine Kataloge vorhanden</p>
-          <small class="text-muted">Erstellen Sie Ihren ersten Katalog, um Produkte zu organisieren</small>
+          <p>Keine Kataloge vorhanden.</p>
+          <small class="text-muted">Erstellen Sie Ihren ersten Katalog, um Artikel zu organisieren.</small>
         </div>
       </div>
     </div>
