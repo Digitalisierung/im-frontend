@@ -18,7 +18,7 @@ export class CatalogService {
     return this.http.get<CatalogPaginationResponse>(this.apiUrl).pipe(
         map(response => response.catalogs),
         catchError((error) => {
-          console.error("ERROR => ", error);
+          console.error("An error occurred while retrieving a list of catalogs.", error);
           return of([]);
         })
     );
@@ -33,18 +33,22 @@ export class CatalogService {
   }
 
   updateCatalog(id: string, catalog: Partial<Catalog>): Observable<Catalog> {
-    return this.http.put<Catalog>(`${this.apiUrl}/${id}`, catalog);
+    return this.http.put<Catalog>(`${this.apiUrl}/${id}`, catalog).pipe(
+      catchError((error) => {
+        console.error(`Failed to update catalog with is "${id}"`, error);
+        return of({} as Catalog);
+      }));
   }
 
   deleteCatalog(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  assignProduct(catalogId: string, productId: string): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/${catalogId}/products`, { productId });
+  assignArticle(catalogId: string, articleId: string): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/${catalogId}/articles`, { productId: articleId });
   }
 
-  removeProduct(catalogId: string, productId: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${catalogId}/products/${productId}`);
+  removeArticle(catalogId: string, articleId: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${catalogId}/articles/${articleId}`);
   }
 }

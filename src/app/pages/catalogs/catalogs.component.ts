@@ -114,6 +114,16 @@ export class CatalogsComponent implements OnInit {
     }
   }
 
+  onCatalogSettingsClick(catalog: Catalog): void {
+    this.selectedCatalog = catalog;
+
+    const modalElement = document.getElementById("catalogEditModal");
+    if (modalElement) {
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show();
+    }
+  }
+
   onCatalogUpdate(catalogData: InsertCatalog): void {
     if (!this.selectedCatalog?.id) return;
 
