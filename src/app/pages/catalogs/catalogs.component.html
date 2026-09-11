@@ -51,6 +51,7 @@
             <i class="bi bi-three-dots-vertical"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item text-dark" (click)="onCatalogSettingsClick(catalog)"><i class="bi bi-gear me-2"></i>Eigenschaften</a></li>
             <li><a class="dropdown-item text-danger" (click)="deleteCatalog(catalog.id)" [attr.data-testid]="'button-delete-catalog-' + catalog.id"><i class="bi bi-trash me-2"></i>Löschen</a></li>
           </ul>
         </div>
@@ -69,9 +70,14 @@
           {{ catalog.description || 'Keine Beschreibung vorhanden' }}
         </p>
       </div>
-      <div class="card-footer bg-white text-muted small">
-        Erstellt: {{ catalog.createdAt ? (catalog.createdAt | date:'dd.MM.yyyy') : 'Unbekannt' }}
-      </div>
+        <div class="card-footer bg-white">
+            <div class="text-muted small">
+                Erstellt: {{ catalog.createdAt ? (catalog.createdAt | date:'dd.MM.yyyy') : 'Unbekannt' }}
+            </div>
+            <div class="text-muted small">
+                Geändert: {{ catalog.updatedAt ? (catalog.updatedAt | date: 'dd.MM.yyyy') : 'Unbekannt' }}
+            </div>
+        </div>
     </div>
   </div>
 
