@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "http://uhilncygas.execute-api.localhost.localstack.cloud:4566",
+    "target": "http://uo3pks2dfy.execute-api.localhost.localstack.cloud:4566",
     "secure": false,
     "changeOrigin": true,
     "pathRewrite": {
