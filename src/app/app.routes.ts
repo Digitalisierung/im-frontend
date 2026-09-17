@@ -3,6 +3,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ArticlesComponent } from '@/app/pages/articles/articles.component';
 import { NewArticleComponent } from '@/app/pages/new-article/new-article.component';
 import { CatalogsComponent } from './pages/catalogs/catalogs.component';
+import {CatalogArticlesComponent} from "@/app/pages/catalog-articles/catalog-articles.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -11,5 +12,6 @@ export const routes: Routes = [
   { path: 'inventar/new', component: NewArticleComponent },
   { path: 'inventar/edit/:id', component: NewArticleComponent },
   { path: 'catalogs', component: CatalogsComponent },
+  { path: `catalogs/:catalogId/articles`, component: CatalogArticlesComponent},
   { path: '**', redirectTo: '/dashboard' }
 ];

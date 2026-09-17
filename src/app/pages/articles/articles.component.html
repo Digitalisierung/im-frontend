@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-between align-items-center">
       <div>
         <h2>Artikelverwaltung</h2>
-        <p class="text-muted mb-0">Alle Artikel verwalten und bearbeiten.</p>
+          <p class="text-muted mb-0">Alle Inventar-Artikel verwalten und bearbeiten.</p>
       </div>
       <a routerLink="/inventar/new" class="btn btn-primary" data-testid="button-new-article">
           <i class="bi bi-plus-circle me-2"></i>Neuer Artikel
@@ -58,7 +58,8 @@
       <button class="btn btn-sm btn-primary" (click)="bulkAssignCatalog()" [disabled]="!bulkCatalogId && bulkCatalogId !== ''" data-testid="button-bulk-assign">
         <i class="bi bi-collection me-1"></i>Katalog zuweisen
       </button>
-      <button class="btn btn-sm btn-danger ms-2" (click)="bulkDelete()" data-testid="button-bulk-delete">
+        <button class="btn btn-sm btn-danger ms-2" title="Alle ausgewählte Artikel löschen." (click)="bulkDelete()"
+                data-testid="button-bulk-delete">
         <i class="bi bi-trash me-1"></i>Löschen
       </button>
     </div>
@@ -109,7 +110,7 @@
                 </div>
                 <div>
                   <strong>{{ article.name }}</strong><br>
-                  <small class="text-muted">{{ article.description || 'Keine Beschreibung' }}</small>
+                    <small class="text-muted">{{ article.description || 'Keine Beschreibung vorhanden.' }}</small>
                 </div>
               </div>
             </td>

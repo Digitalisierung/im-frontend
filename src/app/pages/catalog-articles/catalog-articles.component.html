@@ -1,1 +1,147 @@
-<p>catalog-articles works!</p>
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h2>{{ catalog?.name || 'Artikelverwaltung' }}</h2>
+                <p class="text-muted mb-0">Verwalten Sie alle Inventar-Artikel in diesem Katalog.</p>
+            </div>
+            <div class="d-flex gap-2">
+                <a routerLink="/catalogs" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-2"></i>Zurück
+                </a>
+                <a routerLink="/inventar/new" class="btn btn-primary" data-testid="button-new-article">
+                    <i class="bi bi-plus-circle me-2"></i>Neuer Artikel
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-info" *ngIf="hasSelection" role="alert">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <i class="bi bi-check-circle me-2"></i>
+            <strong>{{ selectedArticles.size }}</strong> Artikel ausgewählt
+        </div>
+        <div class="btn-group">
+            <select [(ngModel)]="bulkCatalogId" class="form-select form-select-sm me-2" style="width: 200px" ;
+                    data-testid="select-bulk-catalog">
+                <option value="">Katalog auswählen...</option>
+                <option value="">Katalog entfernen</option>
+                <option *ngFor="let cat of allCatalogs" [value]="cat.id">{{ cat.name }}</option>
+            </select>
+            <button (click)="bulkAssignCatalog()" [disabled]="!bulkCatalogId && bulkCatalogId !== ''"
+                    class="btn btn-sm btn-primary" data-testid="button-bulk-assign">
+                <i class="bi bi-collection me-1"></i>Katalog zuweisen
+            </button>
+            <button (click)="bulkDelete()" title="Alle ausgewählte Artikel löschen." class="btn btn-sm btn-danger ms-2"
+                    data-testid="button-bulk-delete">
+                <i class="bi bi-trash me-1"></i>Löschen
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Artikelliste (<span data-testid="text-article-count">{{ articles.length }}</span> Artikel)</span>
+    </div>
+    <div class="card-body p-0">
+        <div *ngIf="isLoading" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Laden...</span>
+            </div>
+        </div>
+        <div class="table-responsive" *ngIf="!isLoading">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                <tr>
+                    <th style="width: 40px;">
+                        <input type="checkbox" class="form-check-input" [checked]="allSelected"
+                               (change)="toggleSelectAll($event)" data-testid="checkbox-select-all">
+                    </th>
+                    <th>Artikelname</th>
+                    <th>SKU</th>
+                    <th>Eigenschaften</th>
+                    <th>Status</th>
+                    <th>Aktionen</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let article of articles"
+                    [attr.data-testid]="'row-article-' + article.id"
+                    (dblclick)="onArticleDoubleClick(article)"
+                    title="Doppelklicken für Details" style="cursor: pointer;">
+                    <td (click)="$event.stopPropagation()">
+                        <input type="checkbox" class="form-check-input" [checked]="isArticleSelected(article.id)"
+                               (change)="toggleArticleSelection(article.id)"
+                               [attr.data-testid]="'checkbox-article-' + article.id">
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="me-3">
+                                <div style="width: 40px; height: 40px; background-color: #e9ecef; border-radius: 4px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                    <img *ngIf="article.imageUrl" [src]="article.imageUrl" [alt]="article.name"
+                                         [attr.data-testid]="'img-article-' + article.id"
+                                         style="width: 100%; height: 100%; object-fit: cover;">
+                                    <i *ngIf="!article.imageUrl" class="bi bi-box text-muted"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <strong>{{ article.name }}</strong><br>
+                                <small class="text-muted">{{ article.description || 'Keine Beschreibung vorhanden.' }}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <code>{{ article.sku }}</code>
+                    </td>
+                    <td>
+                        <small *ngIf="article.dynamicFields && article.dynamicFields.length > 0" class="text-muted">
+                            <div *ngFor="let field of article.dynamicFields.slice(0, 2)">
+                                {{ field.name }}: {{ field.value }}
+                            </div>
+                        </small>
+                        <small *ngIf="!article.dynamicFields || article.dynamicFields.length === 0" class="text-muted">
+                            Keine Eigenschaften
+                        </small>
+                    </td>
+                    <td>
+                        <span [ngClass]="article.active ? 'bg-success' : 'bg-warnung'"
+                              class="badge">{{ article.active ? 'Aktiv' : 'Inaktiv' }}</span>
+                    </td>
+                    <td (click)="$event.stopPropagation()">
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-outline-primary" [routerLink]="['/inventar/edit', article.id]"
+                                    title="Bearbeiten" [attr.data-testid]="'button-edit-' + article.id">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" (click)="deleteArticle(article.id)"
+                                    title="Löschen" [attr.data-testid]="'button-delete-' + article.id">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr *ngIf="articles.length === 0">
+                    <td colspan="7" class="text-center text-muted py-5">
+                        <div class="empty-state">
+                            <i class="bi bi-inbox"></i>
+                            <p>Keine Artikel gefunden</p>
+                            <small>Versuchen Sie, Ihre Suchkriterien anzupassen</small>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Article Detail Modal -->
+<app-article-detail-modal
+        [article]="selectedArticle"
+        [catalogName]="selectedInventarCatalogName"
+        [catalogColor]="selectedInventarCatalogColor"
+        modalId="catalogArticleDetailModal">
+</app-article-detail-modal>

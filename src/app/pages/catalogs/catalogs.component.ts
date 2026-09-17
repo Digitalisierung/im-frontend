@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CatalogService } from '../../services/catalog.service';
 import { Catalog, InsertCatalog } from '../../models/catalog.model';
 import { CatalogEditModalComponent } from '../../components/catalog-edit-modal.component';
+import {Router} from "@angular/router";
 
 declare var bootstrap: any;
 
@@ -25,7 +26,7 @@ export class CatalogsComponent implements OnInit {
   
   selectedCatalog: Catalog | null = null;
 
-  constructor(private catalogService: CatalogService) {}
+  constructor(private catalogService: CatalogService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadCatalogs();
@@ -105,13 +106,12 @@ export class CatalogsComponent implements OnInit {
   }
 
   onCatalogDoubleClick(catalog: Catalog): void {
-    this.selectedCatalog = catalog;
-    
-    const modalElement = document.getElementById('catalogEditModal');
-    if (modalElement) {
-      const modal = new bootstrap.Modal(modalElement);
-      modal.show();
+    if (!catalog.id) {
+      console.error('Catalog', catalog);
+      return;
     }
+
+    this.router.navigate(['/catalogs', catalog.id, 'articles']);
   }
 
   onCatalogSettingsClick(catalog: Catalog): void {
