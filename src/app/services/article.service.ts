@@ -5,17 +5,18 @@ import {InsertArticle, Article} from '../models/article.model';
 import {ArticlePaginationResponse} from '../dto/article.pagination.response';
 import {environment} from '@/environments/environment';
 import {ArticleDto} from "@/app/dto/article.dto";
+import {Catalog, InsertCatalog} from "@/app/models/catalog.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ArticleService {
-  private apiUrl = `${environment.apiBaseUrl}/articles`;
+  private apiUrl: string = `${environment.apiBaseUrl}`;
 
   constructor(private http: HttpClient) {}
 
   getArticles(search?: string, catalogId?: string): Observable<Article[]> {
-    let url = this.apiUrl;
+    let url: string = `${this.apiUrl}/articles`;
     const params: string[] = [];
 
     console.log("url => ", url);
@@ -31,16 +32,30 @@ export class ArticleService {
     }
 
     return this.http.get<ArticlePaginationResponse>(url).pipe(
-        map((response) => this.mapArticleResponseToArticles(response)),
+        map((response: ArticlePaginationResponse): Article[] => this.mapArticleResponseToArticles(response)),
         catchError((error) => {
-          console.error('Error fetching articles: ', error);
+          console.error('Error fetching articles:', error);
           return of([]);
         })
     );
   }
 
+  getCatalogArticles(catalogId: string): Observable<Article[]> {
+    const url: string = `${this.apiUrl}/catalogs/${catalogId}/articles`
+
+    return this.http.get<ArticlePaginationResponse>(url).pipe(
+        map((response: ArticlePaginationResponse): Article[] => this.mapArticleResponseToArticles(response)),
+        catchError((error) => {
+          console.error('Failed to fetch articles:', error);
+          return of([])
+        })
+    )
+  }
+
   getArticle(id: string): Observable<Article> {
-    return this.http.get<ArticleDto>(`${this.apiUrl}/${id}`).pipe(
+    const url: string = `${this.apiUrl}/articles/${id}`;
+
+    return this.http.get<ArticleDto>(url).pipe(
         map((article) => this.buildArticleFrom(article)),
         catchError((error) => {
           console.error('Error fetching article:', error);
