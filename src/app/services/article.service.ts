@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {catchError, map, Observable, of, tap} from 'rxjs';
-import {InsertArticle, Article} from '../models/article.model';
+import {catchError, map, Observable, of} from 'rxjs';
+import {Article, InsertArticle} from '../models/article.model';
 import {ArticlePaginationResponse} from '../dto/article.pagination.response';
 import {environment} from '@/environments/environment';
 import {ArticleDto} from "@/app/dto/article.dto";
-import {Catalog, InsertCatalog} from "@/app/models/catalog.model";
 
 @Injectable({
   providedIn: 'root'

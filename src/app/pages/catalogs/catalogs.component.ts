@@ -21,7 +21,8 @@ export class CatalogsComponent implements OnInit {
   newCatalog: InsertCatalog = {
     name: '',
     description: '',
-    color: 'primary'
+    color: 'primary',
+    createdAt: new Date().toISOString()
   };
   
   selectedCatalog: Catalog | null = null;
@@ -84,7 +85,8 @@ export class CatalogsComponent implements OnInit {
     this.newCatalog = {
       name: '',
       description: '',
-      color: 'primary'
+      color: 'primary',
+      createdAt: new Date().toISOString()
     };
   }
 
@@ -126,6 +128,7 @@ export class CatalogsComponent implements OnInit {
 
   onCatalogUpdate(catalogData: InsertCatalog): void {
     if (!this.selectedCatalog?.id) return;
+    console.log('Updating catalog with data:', catalogData);
 
     this.catalogService.updateCatalog(this.selectedCatalog.id, catalogData).subscribe({
       next: () => {
