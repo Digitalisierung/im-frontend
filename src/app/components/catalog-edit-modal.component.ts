@@ -96,7 +96,8 @@ export class CatalogEditModalComponent implements OnChanges {
   formData: InsertCatalog = {
     name: '',
     description: '',
-    color: 'primary'
+    color: 'primary',
+    createdAt: new Date().toISOString()
   };
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -104,7 +105,8 @@ export class CatalogEditModalComponent implements OnChanges {
       this.formData = {
         name: this.catalog.name,
         description: this.catalog.description || '',
-        color: this.catalog.color || 'primary'
+        color: this.catalog.color || 'primary',
+        createdAt: this.initializeCreatedAt()
       };
     } else if (changes['catalog'] && !this.catalog) {
       this.resetForm();
@@ -119,7 +121,12 @@ export class CatalogEditModalComponent implements OnChanges {
     this.formData = {
       name: '',
       description: '',
-      color: 'primary'
+      color: 'primary',
+      createdAt: new Date().toISOString()
     };
+  }
+
+  private initializeCreatedAt(): string {
+    return this.catalog?.createdAt || new Date().toISOString();
   }
 }
