@@ -6,7 +6,6 @@ import {environment} from "@/environments/environment";
 import {CatalogPaginationResponse} from "@/app/dto/catalog.pagination.response";
 import {Article} from "@/app/models/article.model";
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -16,7 +15,9 @@ export class CatalogService {
   constructor(private http: HttpClient) {}
 
   getCatalogs(): Observable<Catalog[]> {
-    return this.http.get<CatalogPaginationResponse>(this.apiUrl).pipe(
+    let url: string = `${this.apiUrl}`;
+    console.log("url", url);
+    return this.http.get<CatalogPaginationResponse>(url).pipe(
         map(response => response.catalogs),
         catchError((error) => {
           console.error("An error occurred while retrieving a list of catalogs.", error);
@@ -26,15 +27,21 @@ export class CatalogService {
   }
 
   getCatalog(id: string): Observable<Catalog> {
-    return this.http.get<Catalog>(`${this.apiUrl}/${id}`);
+    let url: string = `${this.apiUrl}/${id}`;
+    console.log("url", url);
+    return this.http.get<Catalog>(url);
   }
 
   createCatalog(catalog: InsertCatalog): Observable<Catalog> {
-    return this.http.post<Catalog>(this.apiUrl, catalog);
+    let url: string = `${this.apiUrl}`;
+    console.log("url", url);
+    return this.http.post<Catalog>(url, catalog);
   }
 
   updateCatalog(id: string, catalog: Partial<Catalog>): Observable<Catalog> {
-    return this.http.put<Catalog>(`${this.apiUrl}/${id}`, catalog).pipe(
+    let url: string = `${this.apiUrl}/${id}`;
+    console.log("url", url);
+    return this.http.put<Catalog>(url, catalog).pipe(
       catchError((error) => {
         console.error(`Failed to update catalog with is "${id}"`, error);
         return of({} as Catalog);

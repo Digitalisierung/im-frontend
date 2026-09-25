@@ -18,7 +18,8 @@ export class ArticleService {
     let url: string = `${this.apiUrl}/articles`;
     const params: string[] = [];
 
-    console.log("url => ", url);
+    console.log("url", url);
+
     if (search) {
       params.push(`search=${encodeURIComponent(search)}`);
     }
@@ -42,6 +43,8 @@ export class ArticleService {
   getCatalogArticles(catalogId: string): Observable<Article[]> {
     const url: string = `${this.apiUrl}/catalogs/${catalogId}/articles`
 
+    console.log("url", url);
+
     return this.http.get<ArticlePaginationResponse>(url).pipe(
         map((response: ArticlePaginationResponse): Article[] => this.mapArticleResponseToArticles(response)),
         catchError((error) => {
@@ -53,6 +56,8 @@ export class ArticleService {
 
   getArticle(id: string): Observable<Article> {
     const url: string = `${this.apiUrl}/articles/${id}`;
+
+    console.log("url", url);
 
     return this.http.get<ArticleDto>(url).pipe(
         map((article) => this.buildArticleFrom(article)),

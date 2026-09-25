@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "http://aask4sbkvk.execute-api.localhost.localstack.cloud:4566",
+    "target": "http://zem7amwtjl.execute-api.localhost.localstack.cloud:4566",
     "secure": false,
     "changeOrigin": true,
     "pathRewrite": {
