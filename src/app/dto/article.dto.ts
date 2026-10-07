@@ -12,4 +12,5 @@ export interface ArticleDto {
     stock: number;
     isFeatured: boolean;
     updatedAt: string;
+    dynamicFields: []
 }

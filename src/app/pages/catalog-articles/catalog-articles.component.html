@@ -107,8 +107,8 @@
                         </small>
                     </td>
                     <td>
-                        <span [ngClass]="article.active ? 'bg-success' : 'bg-warnung'"
-                              class="badge">{{ article.active ? 'Aktiv' : 'Inaktiv' }}</span>
+                        <span [ngClass]="article.isActive ? 'bg-success' : 'bg-warnung'"
+                              class="badge">{{ article.isActive ? 'Aktiv' : 'Inaktiv' }}</span>
                     </td>
                     <td (click)="$event.stopPropagation()">
                         <div class="action-buttons">

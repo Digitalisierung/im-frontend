@@ -126,7 +126,9 @@
                 Keine Eigenschaften
               </small>
             </td>
-            <td><span class="badge" [ngClass]="article.active ? 'bg-success' : 'bg-warning'">{{ article.active ? 'Aktiv' : 'Inaktiv' }}</span></td>
+              <td><span class="badge"
+                        [ngClass]="article.isActive ? 'bg-success' : 'bg-warning'">{{ article.isActive ? 'Aktiv' : 'Inaktiv' }}</span>
+              </td>
             <td (click)="$event.stopPropagation()">
               <div class="action-buttons">
                 <button class="btn btn-sm btn-outline-primary" [routerLink]="['/inventar/edit', article.id]" title="Bearbeiten" [attr.data-testid]="'button-edit-' + article.id">

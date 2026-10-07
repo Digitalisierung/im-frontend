@@ -18,7 +18,7 @@ export class ArticleService {
     let url: string = `${this.apiUrl}/articles`;
     const params: string[] = [];
 
-    console.log("url", url);
+    console.log("GET: url", url);
 
     if (search) {
       params.push(`search=${encodeURIComponent(search)}`);
@@ -43,7 +43,7 @@ export class ArticleService {
   getCatalogArticles(catalogId: string): Observable<Article[]> {
     const url: string = `${this.apiUrl}/catalogs/${catalogId}/articles`
 
-    console.log("url", url);
+    console.log("GET: url", url);
 
     return this.http.get<ArticlePaginationResponse>(url).pipe(
         map((response: ArticlePaginationResponse): Article[] => this.mapArticleResponseToArticles(response)),
@@ -57,7 +57,7 @@ export class ArticleService {
   getArticle(id: string): Observable<Article> {
     const url: string = `${this.apiUrl}/articles/${id}`;
 
-    console.log("url", url);
+    console.log("GET: url", url);
 
     return this.http.get<ArticleDto>(url).pipe(
         map((article) => this.buildArticleFrom(article)),
@@ -69,7 +69,9 @@ export class ArticleService {
   }
 
   createArticle(insertArticle: InsertArticle): Observable<Article> {
-    return this.http.post<Article>(this.apiUrl, insertArticle);
+    const url: string = `${this.apiUrl}/articles`
+    console.log("POST: URL", url);
+    return this.http.post<Article>(url, insertArticle);
   }
 
   updateArticle(id: string, article: Partial<Article>): Observable<Article> {
@@ -87,6 +89,11 @@ export class ArticleService {
   }
 
   private buildArticleFrom(article: ArticleDto): Article {
+    let dynFields: any = [];
+
+    if (article.dynamicFields)
+      dynFields = article.dynamicFields
+
     return {
       id: this.extractIdFromSortKey(article.sortKey),
       name: article.name,
@@ -95,9 +102,9 @@ export class ArticleService {
       stock: article.stock,
       imageUrl: article.imageUrl,
       catalogId: article.catalogId,
-      active: true, // TODO: entfernen oder state: string = ACTIVE.
-      featured: article.isFeatured,
-      dynamicFields: [],
+      isActive: true, // TODO: entfernen oder state: string = ACTIVE.
+      isFeatured: article.isFeatured,
+      dynamicFields: dynFields,
       createdAt: article.createdAt,
       updatedAt: article.updatedAt,
       entityType: article.entityType

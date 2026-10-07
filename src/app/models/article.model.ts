@@ -13,10 +13,10 @@ export interface Article {
     stock?: number;
     imageUrl?: string;
     catalogId?: string;
-    active: boolean;
-    featured: boolean;
+    isActive?: boolean;
+    isFeatured?: boolean;
     dynamicFields: DynamicField[];
-    createdAt?: string;
+    createdAt: string;
     updatedAt?: string;
     entityType: string;
 }
@@ -26,10 +26,12 @@ export interface InsertArticle {
     sku: string;
     description?: string;
     price?: number;
-    stock?: number;
+    stock: number;
     imageUrl?: string;
     catalogId?: string;
-    active: boolean;
-    featured: boolean;
+    isActive?: boolean;
+    isFeatured?: boolean;
+    createdAt: string;
+    updatedAt?: string;
     dynamicFields: DynamicField[];
 }

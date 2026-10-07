@@ -1,7 +1,6 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Article } from '../models/article.model';
-import { Catalog } from '../models/catalog.model';
+import {Component, Input} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {Article} from '../models/article.model';
 
 @Component({
   selector: 'app-article-detail-modal',
@@ -13,7 +12,8 @@ import { Catalog } from '../models/catalog.model';
       <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" [id]="modalId + 'Label'" data-testid="text-product-name">{{ article?.name }}</h5>
+            <h5 class="modal-title" [id]="modalId + 'Label'"
+                data-testid="text-product-name">{{ article?.name }}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"
                     data-testid="button-close-modal"></button>
           </div>
@@ -21,7 +21,8 @@ import { Catalog } from '../models/catalog.model';
             <div *ngIf="article">
               <!-- Product Image -->
               <div class="text-center mb-4" *ngIf="article.imageUrl">
-                <img [src]="article.imageUrl" [alt]="article.name" class="img-fluid rounded" style="max-height: 300px;"
+                <img [src]="article.imageUrl" [alt]="article.name" class="img-fluid rounded"
+                     style="max-height: 300px;"
                      data-testid="img-product">
               </div>
 
@@ -36,7 +37,8 @@ import { Catalog } from '../models/catalog.model';
                   <p class="mb-0">
                     <span *ngIf="catalogName" class="badge" [ngClass]="'bg-' + catalogColor"
                           data-testid="badge-catalog">{{ catalogName }}</span>
-                    <span *ngIf="!catalogName" class="badge bg-secondary" data-testid="badge-catalog-none">Nicht zugewiesen</span>
+                    <span *ngIf="!catalogName" class="badge bg-secondary"
+                          data-testid="badge-catalog-none">Nicht zugewiesen</span>
                   </p>
                 </div>
               </div>
@@ -71,13 +73,13 @@ import { Catalog } from '../models/catalog.model';
               <!-- Status Badges -->
               <div class="mb-3">
                 <h6 class="text-muted mb-2">Status</h6>
-                <span class="badge me-2" [ngClass]="article.active ? 'bg-success' : 'bg-secondary'"
+                <span class="badge me-2" [ngClass]="article.isActive ? 'bg-success' : 'bg-secondary'"
                       data-testid="badge-active">
-                  {{ article.active ? 'Aktiv' : 'Inaktiv' }}
+                  {{ article.isActive ? 'Aktiv' : 'Inaktiv' }}
                 </span>
-                <span class="badge" [ngClass]="article.featured ? 'bg-warning' : 'bg-light text-dark'"
+                <span class="badge" [ngClass]="article.isFeatured ? 'bg-warning' : 'bg-light text-dark'"
                       data-testid="badge-featured">
-                  {{ article.featured ? 'Hervorgehoben' : 'Normal' }}
+                  {{ article.isFeatured ? 'Hervorgehoben' : 'Normal' }}
                 </span>
               </div>
 
@@ -107,7 +109,8 @@ import { Catalog } from '../models/catalog.model';
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-testid="button-close">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    data-testid="button-close">
               Schließen
             </button>
           </div>
