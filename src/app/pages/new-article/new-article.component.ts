@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterLink, Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ArticleService } from '../../services/article.service';
-import { CatalogService } from '../../services/catalog.service';
-import { Article, InsertArticle, DynamicField } from '../../models/article.model';
-import { Catalog } from '../../models/catalog.model';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {ArticleService} from '../../services/article.service';
+import {CatalogService} from '../../services/catalog.service';
+import {DynamicField, InsertArticle} from '../../models/article.model';
+import {Catalog} from '../../models/catalog.model';
 
 @Component({
   selector: 'app-new-article',
@@ -15,27 +15,27 @@ import { Catalog } from '../../models/catalog.model';
   styleUrls: ['./new-article.component.css']
 })
 export class NewArticleComponent implements OnInit {
-  productForm: FormGroup;
+  articleForm: FormGroup;
   catalogs: Catalog[] = [];
   isEditMode = false;
-  productId?: string;
+  articleId?: string;
   selectedImage: File | null = null;
   imagePreview: string | null = null;
   uploadingImage = false;
 
   constructor(
     private fb: FormBuilder,
-    private productService: ArticleService,
+    private articleService: ArticleService,
     private catalogService: CatalogService,
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.productForm = this.fb.group({
+    this.articleForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
       sku: ['', [Validators.required, Validators.pattern(/^[A-Z0-9\-]+$/)]],
       description: ['', Validators.maxLength(500)],
       price: [null, [Validators.min(0)]],
-      stock: [null, [Validators.min(0), Validators.pattern(/^\d+$/)]],
+      stock: [1, [Validators.required, Validators.min(1), Validators.max(25), Validators.pattern(/^\d+$/)]],
       catalogId: [''],
       active: [true],
       featured: [false],
@@ -49,8 +49,8 @@ export class NewArticleComponent implements OnInit {
     this.route.params.subscribe(params => {
       if (params['id']) {
         this.isEditMode = true;
-        this.productId = params['id'];
-        this.loadProduct(params['id']);
+        this.articleId = params['id'];
+        this.loadArticle(params['id']);
       }
     });
   }
@@ -64,18 +64,18 @@ export class NewArticleComponent implements OnInit {
     });
   }
 
-  loadProduct(id: string): void {
-    this.productService.getArticle(id).subscribe({
+  loadArticle(id: string): void {
+    this.articleService.getArticle(id).subscribe({
       next: (product) => {
-        this.productForm.patchValue({
+        this.articleForm.patchValue({
           name: product.name,
           sku: product.sku,
           description: product.description,
           price: product.price,
           stock: product.stock,
           catalogId: product.catalogId,
-          active: product.active,
-          featured: product.featured
+          active: product.isActive,
+          featured: product.isFeatured
         });
         
         // Set image preview if product has an image
@@ -94,7 +94,7 @@ export class NewArticleComponent implements OnInit {
   }
 
   get dynamicFields(): FormArray {
-    return this.productForm.get('dynamicFields') as FormArray;
+    return this.articleForm.get('dynamicFields') as FormArray;
   }
 
   createDynamicFieldGroup(field?: DynamicField): FormGroup {
@@ -167,7 +167,7 @@ export class NewArticleComponent implements OnInit {
   }
 
   getFieldError(fieldName: string): string | null {
-    const field = this.productForm.get(fieldName);
+    const field = this.articleForm.get(fieldName);
     if (!field || !field.touched || !field.errors) return null;
     
     if (field.errors['required']) return 'Dieses Feld ist erforderlich';
@@ -274,9 +274,9 @@ export class NewArticleComponent implements OnInit {
     }
   }
 
-  async saveProduct(): Promise<void> {
-    if (this.productForm.invalid) {
-      this.markFormGroupTouched(this.productForm);
+  async saveArticle(): Promise<void> {
+    if (this.articleForm.invalid) {
+      this.markFormGroupTouched(this.articleForm);
       return;
     }
 
@@ -290,7 +290,7 @@ export class NewArticleComponent implements OnInit {
       }
     }
 
-    const formValue = this.productForm.value;
+    const formValue = this.articleForm.value;
     
     // Convert boolean string values back to actual booleans for consistency
     const dynamicFields = (formValue.dynamicFields || []).map((field: any) => {
@@ -302,8 +302,8 @@ export class NewArticleComponent implements OnInit {
       }
       return field;
     });
-    
-    const productData: InsertArticle = {
+
+    const articleData: Partial<InsertArticle> = {
       name: formValue.name,
       sku: formValue.sku,
       description: formValue.description,
@@ -311,13 +311,13 @@ export class NewArticleComponent implements OnInit {
       stock: formValue.stock,
       imageUrl: imageUrl || undefined,
       catalogId: formValue.catalogId || undefined,
-      active: formValue.active,
-      featured: formValue.featured,
+      isActive: formValue.active,
+      isFeatured: formValue.featured,
       dynamicFields: dynamicFields
     };
 
-    if (this.isEditMode && this.productId) {
-      this.productService.updateArticle(this.productId, productData).subscribe({
+    if (this.isEditMode && this.articleId) {
+      this.articleService.updateArticle(this.articleId, articleData).subscribe({
         next: () => {
           alert('Artikel erfolgreich aktualisiert!');
           this.router.navigate(['/inventar']);
@@ -328,7 +328,14 @@ export class NewArticleComponent implements OnInit {
         }
       });
     } else {
-      this.productService.createArticle(productData).subscribe({
+      const insertArticle: InsertArticle = {
+        ...articleData,
+        createdAt: new Date().toISOString(),
+        stock: formValue.stock,
+        dynamicFields: dynamicFields
+      } as InsertArticle;
+
+      this.articleService.createArticle(insertArticle).subscribe({
         next: () => {
           alert('Artikel erfolgreich erstellt!');
           this.router.navigate(['/inventar']);
@@ -342,7 +349,7 @@ export class NewArticleComponent implements OnInit {
   }
 
   resetForm(): void {
-    this.productForm.reset({
+    this.articleForm.reset({
       active: true,
       featured: false
     });

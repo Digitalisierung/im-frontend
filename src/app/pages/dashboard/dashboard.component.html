@@ -65,7 +65,9 @@
                   <small class="text-muted">SKU: {{ article.sku }}</small>
                 </td>
                 <td><span class="badge" [ngClass]="'bg-' + getCatalogColor(article.catalogId)" [attr.data-testid]="'badge-catalog-' + article.id">{{ getCatalogName(article.catalogId) }}</span></td>
-                <td><span class="badge" [ngClass]="article.active ? 'bg-success' : 'bg-warning'" [attr.data-testid]="'status-product-' + article.id">{{ article.active ? 'Aktiv' : 'Inaktiv' }}</span></td>
+                  <td><span class="badge" [ngClass]="article.isActive ? 'bg-success' : 'bg-warning'"
+                            [attr.data-testid]="'status-product-' + article.id">{{ article.isActive ? 'Aktiv' : 'Inaktiv' }}</span>
+                  </td>
                 <td>
                   <div class="action-buttons">
                     <button class="btn btn-sm btn-outline-primary" [routerLink]="['/inventar/edit', article.id]" title="Bearbeiten" [attr.data-testid]="'button-edit-' + article.id">

@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { ArticleService } from '../../services/article.service';
-import { CatalogService } from '../../services/catalog.service';
-import { Article } from '../../models/article.model';
-import { Catalog } from '../../models/catalog.model';
-import { ArticleDetailModalComponent } from '../../components/article-detail-modal.component';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RouterLink} from '@angular/router';
+import {FormsModule} from '@angular/forms';
+import {ArticleService} from '../../services/article.service';
+import {CatalogService} from '../../services/catalog.service';
+import {Article} from '../../models/article.model';
+import {Catalog} from '../../models/catalog.model';
+import {ArticleDetailModalComponent} from '../../components/article-detail-modal.component';
 
 declare var bootstrap: any;
 
@@ -63,8 +63,8 @@ export class ArticlesComponent implements OnInit {
         // Apply client-side status filter if needed
         if (this.filterStatus) {
           this.articles = articles.filter(article =>
-            (this.filterStatus === 'active' && article.active) ||
-            (this.filterStatus === 'inactive' && !article.active)
+              (this.filterStatus === 'active' && article.isActive) ||
+              (this.filterStatus === 'inactive' && !article.isActive)
           );
         } else {
           this.articles = articles;

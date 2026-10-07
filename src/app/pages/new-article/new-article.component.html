@@ -13,7 +13,7 @@
   </div>
 </div>
 
-<form [formGroup]="productForm" (ngSubmit)="saveProduct()">
+<form [formGroup]="articleForm" (ngSubmit)="saveArticle()">
   <div class="row">
     <div class="col-lg-8">
       <div class="card mb-4">
@@ -54,7 +54,7 @@
               </div>
             </div>
             <div class="col-md-6">
-              <label for="productStock" class="form-label">Lagerbestand</label>
+                <label for="productStock" class="form-label">Lagerbestand *</label>
               <input type="number" class="form-control" [ngClass]="{'is-invalid': getFieldError('stock')}" id="productStock" formControlName="stock" placeholder="0" data-testid="input-stock">
               <div *ngIf="getFieldError('stock')" class="invalid-feedback">
                 {{ getFieldError('stock') }}

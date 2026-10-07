@@ -4,7 +4,7 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "local": "ng serve --configuration development",
+    "local": "ng serve --configuration local",
     "dev": "ng serve --configuration development",
     "build": "ng build --configuration development",
     "check": "tsc"
