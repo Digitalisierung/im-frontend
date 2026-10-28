@@ -1,16 +1,16 @@
 export interface ArticleDto {
-    entityType: string;
+    dynamicFields: [];
     description: string;
+    isActive: boolean;
     createdAt: string;
-    sortKey: string;
     catalogId: string;
-    partitionKey: string;
-    imageUrl: string;
+    price: number;
     name: string;
-    state: string;
     sku: string;
     stock: number;
     isFeatured: boolean;
     updatedAt: string;
-    dynamicFields: []
+    imageUrl: string;
+    state: string;
+    id: string;
 }

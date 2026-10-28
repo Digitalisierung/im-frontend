@@ -75,11 +75,11 @@ export class ArticleService {
   }
 
   updateArticle(id: string, article: Partial<Article>): Observable<Article> {
-    return this.http.put<Article>(`${this.apiUrl}/${id}`, article);
+    return this.http.put<Article>(`${this.apiUrl}/articles/${id}`, article);
   }
 
   deleteArticle(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/articles/${id}`);
   }
 
   private mapArticleResponseToArticles(response: ArticlePaginationResponse): Article[] {
@@ -95,23 +95,22 @@ export class ArticleService {
       dynFields = article.dynamicFields
 
     return {
-      id: this.extractIdFromSortKey(article.sortKey),
+      id: article.id,
       name: article.name,
       sku: article.sku,
       description: article.description,
       stock: article.stock,
       imageUrl: article.imageUrl,
       catalogId: article.catalogId,
-      isActive: true, // TODO: entfernen oder state: string = ACTIVE.
+      isActive: article.isActive, // TODO: entfernen oder state: string = ACTIVE.
       isFeatured: article.isFeatured,
       dynamicFields: dynFields,
       createdAt: article.createdAt,
-      updatedAt: article.updatedAt,
-      entityType: article.entityType
+      updatedAt: article.updatedAt
     };
   }
 
-  private extractIdFromSortKey(sortKey: string): string {
-    return sortKey.startsWith("ITEM#") ? sortKey.substring("ITEM#".length) : sortKey;
-  }
+  //private extractIdFromSortKey(sortKey: string): string {
+  //return sortKey.startsWith("ITEM#") ? sortKey.substring("ITEM#".length) : sortKey;
+  //}
 }
