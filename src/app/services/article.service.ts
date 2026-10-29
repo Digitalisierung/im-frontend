@@ -18,8 +18,6 @@ export class ArticleService {
     let url: string = `${this.apiUrl}/articles`;
     const params: string[] = [];
 
-    console.log("GET: url", url);
-
     if (search) {
       params.push(`search=${encodeURIComponent(search)}`);
     }
@@ -43,8 +41,6 @@ export class ArticleService {
   getCatalogArticles(catalogId: string): Observable<Article[]> {
     const url: string = `${this.apiUrl}/catalogs/${catalogId}/articles`
 
-    console.log("GET: url", url);
-
     return this.http.get<ArticlePaginationResponse>(url).pipe(
         map((response: ArticlePaginationResponse): Article[] => this.mapArticleResponseToArticles(response)),
         catchError((error) => {
@@ -57,8 +53,6 @@ export class ArticleService {
   getArticle(id: string): Observable<Article> {
     const url: string = `${this.apiUrl}/articles/${id}`;
 
-    console.log("GET: url", url);
-
     return this.http.get<ArticleDto>(url).pipe(
         map((article) => this.buildArticleFrom(article)),
         catchError((error) => {
@@ -70,12 +64,18 @@ export class ArticleService {
 
   createArticle(insertArticle: InsertArticle): Observable<Article> {
     const url: string = `${this.apiUrl}/articles`
-    console.log("POST: URL", url);
     return this.http.post<Article>(url, insertArticle);
   }
 
   updateArticle(id: string, article: Partial<Article>): Observable<Article> {
-    return this.http.put<Article>(`${this.apiUrl}/articles/${id}`, article);
+    const url: string = `${this.apiUrl}/articles/${id}`;
+    console.log('PUT: url: ', url);
+    return this.http.put<Article>(url, article).pipe(
+        catchError((error) => {
+          console.error('Error updating article:', error);
+          return of({} as Article);
+        })
+    );
   }
 
   deleteArticle(id: string): Observable<void> {
