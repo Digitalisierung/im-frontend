@@ -1,0 +1,29 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      nodejs: 22
+    commands:
+      - echo #########################
+      - echo Installing source NPM dependencies...
+      - npm ci
+      - echo Checking NPM version...
+      - npm --version
+      - node --version
+      - npx ng --version
+
+  build:
+    commands:
+      - echo #########################
+      - echo Build started on `date`
+      - npm run build
+      - echo Build completed on `date`
+
+  post_build:
+    commands:
+      - echo #########################
+      - echo Show dist folder contents...
+      - ls -R dist/
+      - echo Deploying to S3 bucket $S3_BUCKET ...
+      - aws s3 sync dist/product-catalog s3://$S3_BUCKET --delete
+      - echo Deploy completed on `date`

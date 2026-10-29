@@ -1,0 +1,11 @@
+{
+  "/api": {
+    "target": "http://dmr9wjodpc.execute-api.localhost.localstack.cloud:4566",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api": "/Prod"
+    },
+    "logLevel": "debug"
+  }
+}
