@@ -18,7 +18,6 @@ export interface Article {
     dynamicFields: DynamicField[];
     createdAt: string;
     updatedAt?: string;
-    entityType: string;
 }
 
 export interface InsertArticle {
