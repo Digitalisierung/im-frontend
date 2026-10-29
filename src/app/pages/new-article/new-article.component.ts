@@ -4,8 +4,9 @@ import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ArticleService} from '../../services/article.service';
 import {CatalogService} from '../../services/catalog.service';
-import {DynamicField, InsertArticle} from '../../models/article.model';
+import {DynamicField} from '../../models/article.model';
 import {Catalog} from '../../models/catalog.model';
+import {InsertArticle} from "@/app/dto/insert.article";
 
 @Component({
   selector: 'app-new-article',

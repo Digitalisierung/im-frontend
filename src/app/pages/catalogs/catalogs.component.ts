@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { CatalogService } from '../../services/catalog.service';
-import { Catalog, InsertCatalog } from '../../models/catalog.model';
-import { CatalogEditModalComponent } from '../../components/catalog-edit-modal.component';
+import {Component, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {CatalogService} from '../../services/catalog.service';
+import {Catalog} from '../../models/catalog.model';
+import {CatalogEditModalComponent} from '../../components/catalog-edit-modal.component';
 import {Router} from "@angular/router";
+import {InsertCatalog} from "@/app/dto/insert.catalog";
 
 declare var bootstrap: any;
 

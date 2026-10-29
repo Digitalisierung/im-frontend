@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {catchError, map, Observable, of} from 'rxjs';
-import {Article, InsertArticle} from '../models/article.model';
+import {catchError, map, Observable, of, throwError} from 'rxjs';
+import {Article} from '../models/article.model';
 import {ArticlePaginationResponse} from '../dto/article.pagination.response';
 import {environment} from '@/environments/environment';
 import {ArticleDto} from "@/app/dto/article.dto";
+import {InsertArticle} from "@/app/dto/insert.article";
 
 @Injectable({
   providedIn: 'root'
@@ -56,8 +57,7 @@ export class ArticleService {
     return this.http.get<ArticleDto>(url).pipe(
         map((article) => this.buildArticleFrom(article)),
         catchError((error) => {
-          console.error('Error fetching article:', error);
-          return of({} as Article);
+          return throwError(() => error);
         })
     );
   }
@@ -69,11 +69,10 @@ export class ArticleService {
 
   updateArticle(id: string, article: Partial<Article>): Observable<Article> {
     const url: string = `${this.apiUrl}/articles/${id}`;
-    console.log('PUT: url: ', url);
+
     return this.http.put<Article>(url, article).pipe(
         catchError((error) => {
-          console.error('Error updating article:', error);
-          return of({} as Article);
+          return throwError(() => error);
         })
     );
   }
@@ -109,8 +108,4 @@ export class ArticleService {
       updatedAt: article.updatedAt
     };
   }
-
-  //private extractIdFromSortKey(sortKey: string): string {
-  //return sortKey.startsWith("ITEM#") ? sortKey.substring("ITEM#".length) : sortKey;
-  //}
 }
