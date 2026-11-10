@@ -28,19 +28,16 @@ export class CatalogService {
 
   getCatalog(id: string): Observable<Catalog> {
     let url: string = `${this.apiUrl}/${id}`;
-    console.log("url", url);
     return this.http.get<Catalog>(url);
   }
 
   createCatalog(catalog: InsertCatalog): Observable<Catalog> {
     let url: string = `${this.apiUrl}`;
-    console.log("url", url);
     return this.http.post<Catalog>(url, catalog);
   }
 
   updateCatalog(id: string, catalog: Partial<Catalog>): Observable<Catalog> {
     let url: string = `${this.apiUrl}/${id}`;
-    console.log("url", url);
     return this.http.put<Catalog>(url, catalog).pipe(
       catchError((error) => {
         console.error(`Failed to update catalog with is "${id}"`, error);
