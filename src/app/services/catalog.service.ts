@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {catchError, map, Observable} from 'rxjs';
+import {catchError, map, Observable, of} from 'rxjs';
 import {Catalog} from '../models/catalog.model';
 import {environment} from "@/environments/environment";
 import {CatalogPaginationResponse} from "@/app/dto/catalog.pagination.response";
