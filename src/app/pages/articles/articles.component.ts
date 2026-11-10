@@ -179,20 +179,20 @@ export class ArticlesComponent implements OnInit {
       return;
     }
 
-    const articleIds = Array.from(this.selectedArticles);
+    const ids = Array.from(this.selectedArticles);
 
-    fetch('/api/articles/bulk', {
+    fetch('/api/articles', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ productIds: articleIds })
+      body: JSON.stringify({articleIds: ids})
     })
       .then(async response => {
         if (!response.ok) {
           throw new Error('Delete failed');
         }
         // Handle both JSON and 204 No Content responses
-        if (response.status === 204) {
-          return { message: 'Artikel erfolgreich gelöscht' };
+        if (response.status === 204 || response.status === 205) {
+          return {message: 'Artikels erfolgreich gelöscht'};
         }
         return response.json();
       })

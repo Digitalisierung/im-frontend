@@ -7,10 +7,3 @@ export interface Catalog {
   createdAt?: string;
   updatedAt?: string;
 }
-
-export interface InsertCatalog {
-  name: string;
-  description?: string;
-  color: string;
-  createdAt: string;
-}

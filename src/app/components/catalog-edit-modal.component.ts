@@ -1,7 +1,8 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Catalog, InsertCatalog } from '../models/catalog.model';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {Catalog} from '../models/catalog.model';
+import {InsertCatalog} from "@/app/dto/insert.catalog";
 
 @Component({
   selector: 'app-catalog-edit-modal',
