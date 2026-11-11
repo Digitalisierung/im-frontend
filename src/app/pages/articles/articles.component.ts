@@ -34,8 +34,8 @@ export class ArticlesComponent implements OnInit {
   selectedInventarCatalogColor: string = 'secondary';
 
   constructor(
-    private articleService: ArticleService,
-    private catalogService: CatalogService
+      private readonly articleService: ArticleService,
+      private readonly catalogService: CatalogService
   ) {}
 
   ngOnInit(): void {
@@ -181,30 +181,17 @@ export class ArticlesComponent implements OnInit {
 
     const ids = Array.from(this.selectedArticles);
 
-    fetch('/api/articles', {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({articleIds: ids})
-    })
-      .then(async response => {
-        if (!response.ok) {
-          throw new Error('Delete failed');
-        }
-        // Handle both JSON and 204 No Content responses
-        if (response.status === 204 || response.status === 205) {
-          return {message: 'Artikels erfolgreich gelöscht'};
-        }
-        return response.json();
-      })
-      .then(data => {
-        alert(data.message || 'Artikel erfolgreich gelöscht');
+    this.articleService.bulkDeleteArticles(ids).subscribe({
+      next: (data) => {
+        alert(data ?? 'Artikel erfolgreich gelöscht');
         this.selectedArticles.clear();
         this.loadArticles();
-      })
-      .catch(err => {
+      },
+      error: (err) => {
         console.error('Error deleting articles:', err);
-        alert('Fehler beim Löschen der Artikel');
-      });
+        alert('Fehler beim Löschen der Artikel. Artikel konnten nicht gelöscht werden.');
+      }
+    });
   }
 
   onArticleDoubleClick(article: Article): void {

@@ -81,6 +81,11 @@ export class ArticleService {
     return this.http.delete<void>(`${this.apiUrl}/articles/${id}`);
   }
 
+  bulkDeleteArticles(ids: string[]) {
+    const url: string = `${this.apiUrl}/articles`;
+    return this.http.delete<void>(url, {body: {articleIds: ids}});
+  }
+
   private mapArticleResponseToArticles(response: ArticlePaginationResponse): Article[] {
     const articles = JSON.parse(response.articles) as ArticleDto[];
 
